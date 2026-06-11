@@ -1,26 +1,51 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+@theme {
+  /* --- Typography --- */
+  --font-heading: var(--font-heading);
+  --font-body: var(--font-body);
+
+  /* Headings */
+  --text-title: 69px;
+  --text-h1: 55px;
+  --text-h2: 44px;
+  --text-h3: 35px;
+  --text-h4: 28px;
+  --text-h5: 20px;
+
+  /* Body */
+  --text-body-reg: 18px;
+  --text-body-sm: 14px;
+  --text-body-xs: 12px;
+
+  /* -------------------------------------------------------------------------- */
+
+  /* --- Color Variables --- */
+
+  /* Background */
+  --color-bg-screen: #111111;
+
+  /* Text */
+  --color-text-primary: #c4b6b6;
+  --color-text-caption: #938989;
+
+  /* Design */
+  --color-ds-primary: #c4b6b6;
+  --color-ds-accent: #938989;
+
+  /* States */
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+@layer base {
+  body {
+    background-color: var(--color-bg-screen);
+    color: var(--color-text-primary);
+    font-family: var(--font-body);
+    line-height: 1.2;
   }
-}
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-heading);
+    font-weight: 400;
+  }
 }
