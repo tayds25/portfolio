@@ -3,12 +3,24 @@
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import ScrollTrigger from "gsap/ScrollTrigger";
+import Image from "next/image";
 import { useRef, useState } from "react";
+
+// Assets
+import aboutImg from "@/assets/carousel/about.jpg";
+import caseStudyImg from "@/assets/carousel/case_study.jpg";
+import processImg from "@/assets/carousel/process.jpg";
+import projectsImg from "@/assets/carousel/projects.jpg";
 
 gsap.registerPlugin(ScrollTrigger);
 
 export default function Home() {
-  const carousel = ["About", "Process", "Projects", "Case Studies"];
+  const carousel = [
+    { title: "About", src: aboutImg },
+    { title: "Process", src: processImg },
+    { title: "Projects", src: projectsImg },
+    { title: "Case Studies", src: caseStudyImg },
+  ];
   const [activeIndex, setActiveIndex] = useState(0);
   const wrapperRef = useRef<HTMLElement | null>(null);
   const trackRef = useRef<HTMLDivElement | null>(null);
@@ -29,9 +41,8 @@ export default function Home() {
 
       const scrollDistance = lastCard.offsetLeft;
 
-      gsap.to(track, {
-        x: -scrollDistance,
-        ease: "none",
+      // We use a timeline to sync both animations to the same ScrollTrigger
+      const tl = gsap.timeline({
         scrollTrigger: {
           trigger: wrapperRef.current,
           pin: true,
@@ -45,6 +56,27 @@ export default function Home() {
           },
         },
       });
+
+      // Animate track translation
+      tl.to(
+        track,
+        {
+          x: -scrollDistance,
+          ease: "none",
+        },
+        0 // start exactly at timeline 0
+      );
+
+      // Animate parallax images
+      const parallaxImages = gsap.utils.toArray("[data-parallax]", track);
+      tl.to(
+        parallaxImages,
+        {
+          xPercent: 15,
+          ease: "none",
+        },
+        0 // start parallel with the track translation
+      );
     },
     { scope: wrapperRef }
   );
@@ -100,7 +132,7 @@ export default function Home() {
             <div className="flex items-end gap-2">
               {carousel.map((item, index) => (
                 <div
-                  key={item}
+                  key={item.title}
                   className={`w-2 rounded-full transition-[height] duration-300 ease-out ${
                     index === activeIndex
                       ? "h-8 bg-text-primary"
@@ -118,12 +150,28 @@ export default function Home() {
         <div ref={trackRef} className="relative flex w-max flex-row gap-10">
           {carousel.map((item, index) => (
             <div
-              key={item}
-              className={`h-112.5 w-75 shrink-0 bg-ds-accent/20 ${
+              key={item.title}
+              className={`group relative h-112.5 w-75 shrink-0 cursor-pointer overflow-hidden bg-ds-accent/20 ${
                 index % 2 !== 0 ? "mt-32" : ""
               }`}
             >
-              {item}
+              <div
+                data-parallax
+                className="absolute top-0 left-[-15%] h-full w-[130%]"
+              >
+                <Image
+                  src={item.src}
+                  alt={item.title}
+                  fill
+                  className="object-cover grayscale transition-all duration-700 ease-out group-hover:scale-105 group-hover:grayscale-0"
+                />
+              </div>
+
+              <div className="absolute bottom-0 z-10 p-6 opacity-0 translate-y-4 transition-all duration-500 group-hover:translate-y-0 group-hover:opacity-100">
+                <h2 className="font-heading text-h4 text-text-primary">
+                  {item.title}
+                </h2>
+              </div>
             </div>
           ))}
         </div>
