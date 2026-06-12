@@ -72,10 +72,10 @@ export default function Home() {
       tl.to(
         parallaxImages,
         {
-          xPercent: 15,
+          xPercent: 10,
           ease: "none",
         },
-        0 // start parallel with the track translation
+        0
       );
     },
     { scope: wrapperRef }
@@ -151,27 +151,29 @@ export default function Home() {
           {carousel.map((item, index) => (
             <div
               key={item.title}
-              className={`group relative h-112.5 w-75 shrink-0 cursor-pointer overflow-hidden bg-ds-accent/20 ${
+              className={`group flex w-75 shrink-0 flex-col gap-4 ${
                 index % 2 !== 0 ? "mt-32" : ""
               }`}
             >
-              <div
-                data-parallax
-                className="absolute top-0 left-[-15%] h-full w-[130%]"
-              >
-                <Image
-                  src={item.src}
-                  alt={item.title}
-                  fill
-                  className="object-cover grayscale transition-all duration-700 ease-out group-hover:scale-105 group-hover:grayscale-0"
-                />
+              <p className="font-heading text-h5 text-text-caption opacity-0 transition-opacity duration-500 group-hover:opacity-100">
+                (0{index + 1})
+              </p>
+
+              <div className="cursor-pointer relative h-112.5 w-full shrink-0 overflow-hidden bg-ds-accent/20">
+                <div
+                  data-parallax
+                  className="absolute top-0 left-[-15%] h-full w-[130%]"
+                >
+                  <Image
+                    src={item.src}
+                    alt={item.title}
+                    fill
+                    className="object-cover grayscale transition-all duration-700 ease-out group-hover:scale-105 group-hover:grayscale-0"
+                  />
+                </div>
               </div>
 
-              <div className="absolute bottom-0 z-10 p-6 opacity-0 translate-y-4 transition-all duration-500 group-hover:translate-y-0 group-hover:opacity-100">
-                <h2 className="font-heading text-h4 text-text-primary">
-                  {item.title}
-                </h2>
-              </div>
+              <p className="font-heading text-h4 text-text-primary opacity-0 transition-opacity duration-500 group-hover:opacity-100">{item.title}</p>
             </div>
           ))}
         </div>
