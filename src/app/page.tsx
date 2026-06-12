@@ -109,13 +109,13 @@ export default function Home() {
 
             {/* Links */}
             <div className="flex flex-col items-end gap-2 text-right">
-              <a className="pointer-events-auto font-heading text-h5 text-color-primary" href="mailto:tayshaunds25@gmail.com">
+              <a className="pointer-events-auto font-heading text-h5 text-color-primary hover:text-color-accent" href="mailto:tayshaunds25@gmail.com">
                 [email]
               </a>
-              <a className="pointer-events-auto font-heading text-h5 text-color-primary" href="https://www.linkedin.com/in/tayshaunds/" target="_blank" rel="noreferrer">
+              <a className="pointer-events-auto font-heading text-h5 text-color-primary hover:text-color-accent" href="https://www.linkedin.com/in/tayshaunds/" target="_blank" rel="noreferrer">
                 [linkedin]
               </a>
-              <a className="pointer-events-auto font-heading text-h5 text-color-primary" href="https://github.com/tayds25" target="_blank" rel="noreferrer">
+              <a className="pointer-events-auto font-heading text-h5 text-color-primary hover:text-color-accent" href="https://github.com/tayds25" target="_blank" rel="noreferrer">
                 [github]
               </a>
             </div>
