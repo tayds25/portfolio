@@ -25,21 +25,15 @@
   /* Background */
   --color-bg-screen: #111111;
 
-  /* Text */
-  --color-text-primary: #c4b6b6;
-  --color-text-caption: #938989;
-
-  /* Design */
-  --color-ds-primary: #c4b6b6;
-  --color-ds-accent: #938989;
-
-  /* States */
+  /* Colors */
+  --color-color-primary: #c4b6b6;
+  --color-color-accent: #938989;
 }
 
 @layer base {
   html, body {
     background-color: var(--color-bg-screen);
-    color: var(--color-text-primary);
+    color: var(--color-landing-primary);
     font-family: var(--font-body);
     line-height: 1.2;
 

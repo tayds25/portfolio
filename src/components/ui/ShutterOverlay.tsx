@@ -4,7 +4,7 @@ const ShutterOverlay = forwardRef<HTMLDivElement, unknown>(function ShutterOverl
     return (
         <div
             ref={ref}
-            className="fixed inset-0 z-[100] h-screen w-full bg-text-primary pointer-events-none"
+            className="fixed inset-0 z-[100] h-screen w-full bg-color-primary pointer-events-none"
         />
     );
 });

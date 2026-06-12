@@ -28,7 +28,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${workSans.variable} ${jetBrainsMono.variable} h-full antialiased`}
+      className={`${workSans.variable} ${jetBrainsMono.variable} antialiased`}
     >
       <body>
         <SmoothScroll>
