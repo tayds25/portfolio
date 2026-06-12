@@ -16,10 +16,10 @@ gsap.registerPlugin(ScrollTrigger);
 
 export default function Home() {
   const carousel = [
-    { title: "About", src: aboutImg },
-    { title: "Process", src: processImg },
-    { title: "Projects", src: projectsImg },
-    { title: "Case Studies", src: caseStudyImg },
+    { title: "about", src: aboutImg },
+    { title: "process", src: processImg },
+    { title: "projects", src: projectsImg },
+    { title: "case studies", src: caseStudyImg },
   ];
   const [activeIndex, setActiveIndex] = useState(0);
   const wrapperRef = useRef<HTMLElement | null>(null);
@@ -41,7 +41,6 @@ export default function Home() {
 
       const scrollDistance = lastCard.offsetLeft;
 
-      // We use a timeline to sync both animations to the same ScrollTrigger
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: wrapperRef.current,
@@ -57,17 +56,15 @@ export default function Home() {
         },
       });
 
-      // Animate track translation
       tl.to(
         track,
         {
           x: -scrollDistance,
           ease: "none",
         },
-        0 // start exactly at timeline 0
+        0
       );
 
-      // Animate parallax images
       const parallaxImages = gsap.utils.toArray("[data-parallax]", track);
       tl.to(
         parallaxImages,
@@ -155,7 +152,7 @@ export default function Home() {
                 index % 2 !== 0 ? "mt-32" : ""
               }`}
             >
-              <p className="font-heading text-h5 text-text-caption opacity-0 transition-opacity duration-500 group-hover:opacity-100">
+              <p className="font-body text-h5 text-text-caption opacity-0 transition-opacity duration-500 group-hover:opacity-100">
                 (0{index + 1})
               </p>
 
@@ -173,7 +170,9 @@ export default function Home() {
                 </div>
               </div>
 
-              <p className="font-heading text-h4 text-text-primary opacity-0 transition-opacity duration-500 group-hover:opacity-100">{item.title}</p>
+              <p className="font-body text-h4 text-text-primary opacity-0 transition-opacity duration-500 group-hover:opacity-100">
+                {item.title}
+              </p>
             </div>
           ))}
         </div>
