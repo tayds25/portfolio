@@ -102,8 +102,8 @@ export default function Home() {
               <h1 className="font-heading text-h4 text-text-primary">
                 tayshaun
               </h1>
-              <p className="font-heading text-h5 text-text-caption">
-                ( developer / designer )
+              <p className="font-body text-reg text-text-caption">
+                developer / designer
               </p>
             </div>
 
