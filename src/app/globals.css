@@ -26,8 +26,8 @@
   --color-bg-screen: #111111;
 
   /* Colors */
-  --color-landing-primary: #c4b6b6;
-  --color-landing-accent: #938989;
+  --color-color-primary: #c4b6b6;
+  --color-color-accent: #938989;
 }
 
 @layer base {

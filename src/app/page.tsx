@@ -99,23 +99,23 @@ export default function Home() {
           <div className="flex items-start justify-between">
             {/* Header */}
             <div className="flex flex-col">
-              <h1 className="font-heading text-h4 text-landing-primary">
+              <h1 className="font-heading text-h4 text-color-primary">
                 tayshaun
               </h1>
-              <p className="font-body text-reg text-landing-primary">
+              <p className="font-body text-reg text-color-accent">
                 developer / designer
               </p>
             </div>
 
             {/* Links */}
             <div className="flex flex-col items-end gap-2 text-right">
-              <a className="pointer-events-auto font-heading text-h5 text-landing-primary" href="mailto:tayshaunds25@gmail.com">
+              <a className="pointer-events-auto font-heading text-h5 text-color-primary" href="mailto:tayshaunds25@gmail.com">
                 [email]
               </a>
-              <a className="pointer-events-auto font-heading text-h5 text-landing-primary" href="https://www.linkedin.com/in/tayshaunds/" target="_blank" rel="noreferrer">
+              <a className="pointer-events-auto font-heading text-h5 text-color-primary" href="https://www.linkedin.com/in/tayshaunds/" target="_blank" rel="noreferrer">
                 [linkedin]
               </a>
-              <a className="pointer-events-auto font-heading text-h5 text-landing-primary" href="https://github.com/tayds25" target="_blank" rel="noreferrer">
+              <a className="pointer-events-auto font-heading text-h5 text-color-primary" href="https://github.com/tayds25" target="_blank" rel="noreferrer">
                 [github]
               </a>
             </div>
@@ -128,7 +128,7 @@ export default function Home() {
                 <div
                   key={item.title}
                   className={`w-2 rounded-full transition-[height] duration-300 ease-out ${
-                    index === activeIndex ? "h-8 bg-landing-primary" : "h-4 bg-landing-primary"
+                    index === activeIndex ? "h-8 bg-color-primary" : "h-4 bg-color-primary"
                   }`}
                 />
               ))}
@@ -147,7 +147,7 @@ export default function Home() {
                 index % 2 !== 0 ? "mt-32" : ""
               }`}
             >
-              <p className="font-body text-h5 text-landing-primary opacity-0 transition-opacity duration-500 group-hover:opacity-100">
+              <p className="font-body text-h5 text-color-primary opacity-0 transition-opacity duration-500 group-hover:opacity-100">
                 (0{index + 1})
               </p>
 
@@ -162,7 +162,7 @@ export default function Home() {
                 </div>
               </div>
 
-              <p className="font-body text-h4 text-landing-primary opacity-0 transition-opacity duration-500 group-hover:opacity-100">
+              <p className="font-body text-h4 text-color-primary opacity-0 transition-opacity duration-500 group-hover:opacity-100">
                 {item.title}
               </p>
             </div>
