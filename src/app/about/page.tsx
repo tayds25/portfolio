@@ -36,12 +36,12 @@ export default function About() {
     };
 
     return (
-        <main className="flex min-h-screen flex-col items-center justify-center bg-bg-screen p-20 text-text-primary">
+        <main className="flex min-h-screen flex-col items-center justify-center bg-bg-screen p-20 text-landing-primary">
         <h1 className="font-heading text-title">About Me</h1>
 
         <button
             onClick={handleBackToHome}
-            className="mt-8 cursor-pointer font-body text-text-caption transition-colors hover:text-text-primary"
+            className="mt-8 cursor-pointer font-body text-landing-primary transition-colors hover:text-landing-primary"
         >
             [back to home]
         </button>

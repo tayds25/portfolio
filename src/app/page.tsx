@@ -99,23 +99,23 @@ export default function Home() {
           <div className="flex items-start justify-between">
             {/* Header */}
             <div className="flex flex-col">
-              <h1 className="font-heading text-h4 text-text-primary">
+              <h1 className="font-heading text-h4 text-landing-primary">
                 tayshaun
               </h1>
-              <p className="font-body text-reg text-text-caption">
+              <p className="font-body text-reg text-landing-primary">
                 developer / designer
               </p>
             </div>
 
             {/* Links */}
             <div className="flex flex-col items-end gap-2 text-right">
-              <a className="pointer-events-auto font-heading text-h5 text-text-primary" href="mailto:tayshaunds25@gmail.com">
+              <a className="pointer-events-auto font-heading text-h5 text-landing-primary" href="mailto:tayshaunds25@gmail.com">
                 [email]
               </a>
-              <a className="pointer-events-auto font-heading text-h5 text-text-primary" href="https://www.linkedin.com/in/tayshaunds/" target="_blank" rel="noreferrer">
+              <a className="pointer-events-auto font-heading text-h5 text-landing-primary" href="https://www.linkedin.com/in/tayshaunds/" target="_blank" rel="noreferrer">
                 [linkedin]
               </a>
-              <a className="pointer-events-auto font-heading text-h5 text-text-primary" href="https://github.com/tayds25" target="_blank" rel="noreferrer">
+              <a className="pointer-events-auto font-heading text-h5 text-landing-primary" href="https://github.com/tayds25" target="_blank" rel="noreferrer">
                 [github]
               </a>
             </div>
@@ -128,7 +128,7 @@ export default function Home() {
                 <div
                   key={item.title}
                   className={`w-2 rounded-full transition-[height] duration-300 ease-out ${
-                    index === activeIndex ? "h-8 bg-text-primary" : "h-4 bg-text-caption"
+                    index === activeIndex ? "h-8 bg-landing-primary" : "h-4 bg-landing-primary"
                   }`}
                 />
               ))}
@@ -147,11 +147,11 @@ export default function Home() {
                 index % 2 !== 0 ? "mt-32" : ""
               }`}
             >
-              <p className="font-body text-h5 text-text-caption opacity-0 transition-opacity duration-500 group-hover:opacity-100">
+              <p className="font-body text-h5 text-landing-primary opacity-0 transition-opacity duration-500 group-hover:opacity-100">
                 (0{index + 1})
               </p>
 
-              <div onClick={() => handleCardClick(item.title)} className="cursor-pointer relative h-112.5 w-full shrink-0 overflow-hidden bg-ds-accent/20">
+              <div onClick={() => handleCardClick(item.title)} className="cursor-pointer relative h-112.5 w-full shrink-0 overflow-hidden bg-landing-primary/20">
                 <div data-parallax className="absolute top-0 left-[-15%] h-full w-[130%]">
                   <Image
                     src={item.src}
@@ -162,7 +162,7 @@ export default function Home() {
                 </div>
               </div>
 
-              <p className="font-body text-h4 text-text-primary opacity-0 transition-opacity duration-500 group-hover:opacity-100">
+              <p className="font-body text-h4 text-landing-primary opacity-0 transition-opacity duration-500 group-hover:opacity-100">
                 {item.title}
               </p>
             </div>
