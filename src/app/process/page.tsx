@@ -15,6 +15,18 @@ import step2Svg from "@/assets/process_page/step_2.svg";
 import step3Svg from "@/assets/process_page/step_3.svg";
 import mouseCursorSvg from "@/assets/process_page/mouse_cursor.svg";
 
+import step1Slide1 from "@/assets/process_page/step1_slides/slide_1.png";
+import step1Slide2 from "@/assets/process_page/step1_slides/slide_2.png";
+import step1Slide3 from "@/assets/process_page/step1_slides/slide_3.png";
+
+import step2Slide1 from "@/assets/process_page/step2_slides/slide_1.png";
+import step2Slide2 from "@/assets/process_page/step2_slides/slide_2.png";
+import step2Slide3 from "@/assets/process_page/step2_slides/slide_3.png";
+
+import step3Slide1 from "@/assets/process_page/step3_slides/slide_1.png";
+import step3Slide2 from "@/assets/process_page/step3_slides/slide_2.png";
+import step3Slide3 from "@/assets/process_page/step3_slides/slide_3.png";
+
 // Plugins
 gsap.registerPlugin(ScrollTrigger, MotionPathPlugin);
 
@@ -324,11 +336,11 @@ export default function Process() {
                         ref={(el) => { carouselRefs.current[0] = el; }}
                         className="relative flex w-full snap-x snap-mandatory overflow-x-auto pb-8 gap-6 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
                     >
-                        {[1, 2, 3].map((slide) => (
-                            <div key={`plan-${slide}`} className="shrink-0 flex h-[400px] w-full md:w-[80%] items-center justify-center rounded-xl border border-text-caption/20 bg-ds-accent/5 snap-center">
-                            <span className="font-heading text-h5 text-color-primary opacity-30">WIREFRM_IMG_{slide}.PNG</span>
-                            </div>
-                        ))}
+                    {[step1Slide1, step1Slide2, step1Slide3].map((slide, index) => (
+                        <div key={`plan-${index}`} className="relative shrink-0 flex h-[400px] w-full md:w-[80%] items-center justify-center rounded-xl border border-color-primary/50 bg-color-accent/10 snap-center overflow-hidden">
+                            <Image src={slide} alt={`Plan Slide ${index + 1}`} fill className="object-cover" />
+                        </div>
+                    ))}
                     </div>
                 </div>
 
@@ -349,11 +361,11 @@ export default function Process() {
                         ref={(el) => { carouselRefs.current[1] = el; }}
                         className="relative flex w-full md:w-1/2 snap-x snap-mandatory overflow-x-auto pb-8 gap-6 [scrollbar-width:none]"
                     >
-                        {[1, 2, 3].map((slide) => (
-                            <div key={`design-${slide}`} className="shrink-0 flex h-[400px] w-[90%] items-center justify-center rounded-xl border border-text-caption/20 bg-text-caption/5 snap-center">
-                            <span className="font-heading text-h5 text-color-primary opacity-30">FIGMA_MOCK_{slide}.PNG</span>
-                            </div>
-                        ))}
+                    {[step2Slide1, step2Slide2, step2Slide3].map((slide, index) => (
+                        <div key={`design-${index}`} className="relative shrink-0 flex h-[400px] w-[90%] items-center justify-center rounded-xl border border-color-primary/50 bg-color-accent/10 snap-center overflow-hidden">
+                            <Image src={slide} alt={`Design Slide ${index + 1}`} fill className="object-cover" />
+                        </div>
+                    ))}
                     </div>
                 </div>
 
@@ -364,11 +376,11 @@ export default function Process() {
                         ref={(el) => { carouselRefs.current[2] = el; }}
                         className="relative flex w-full md:w-1/2 snap-x snap-mandatory overflow-x-auto pb-8 gap-6 [scrollbar-width:none]"
                     >
-                        {[1, 2, 3].map((slide) => (
-                            <div key={`code-${slide}`} className="shrink-0 flex h-[400px] w-[90%] items-center justify-center rounded-xl border border-text-caption/20 bg-text-primary/5 snap-center">
-                            <span className="font-heading text-h5 text-color-primary opacity-30">CODE_SNIP_{slide}.PNG</span>
-                            </div>
-                        ))}
+                    {[step3Slide1, step3Slide2, step3Slide3].map((slide, index) => (
+                        <div key={`code-${index}`} className="relative shrink-0 flex h-[400px] w-[90%] items-center justify-center rounded-xl border border-color-primary/50 bg-color-accent/10 snap-center overflow-hidden">
+                            <Image src={slide} alt={`Code Slide ${index + 1}`} fill className="object-cover" />
+                        </div>
+                    ))}
                     </div>
 
                     <div className="flex-1 text-left md:text-right">
