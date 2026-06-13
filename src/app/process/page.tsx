@@ -96,7 +96,7 @@ export default function Process() {
         <div className="absolute right-10 top-10 z-50 md:right-20 md:top-20">
             <button
             onClick={handleBackToHome}
-            className="cursor-pointer font-body text-body-reg text-text-caption transition-colors hover:text-text-primary"
+            className="cursor-pointer font-body text-body-reg text-text-caption transition-colors hover:text-color-accent"
             >
             close [x]
             </button>
@@ -104,13 +104,13 @@ export default function Process() {
 
         {/* Hero Section */}
         <section className="flex h-screen w-full flex-col items-center justify-center p-10 text-center md:p-20">
-            <h1 className="font-heading text-[clamp(2.5rem,5vw,5rem)] leading-tight text-text-primary">
+            <h1 className="font-heading text-[clamp(2.5rem,5vw,5rem)] leading-tight text-color-primary">
             so, what do i do?<br />
             and how do i do it?
             </h1>
 
             {/* Scroll Indicator */}
-            <div className="mt-16 flex flex-col items-center gap-3 opacity-60">
+            <div className="mt-16 flex flex-col items-center gap-3 opacity-60 text-color-accent">
             <svg
                 width="24"
                 height="40"
@@ -149,18 +149,18 @@ export default function Process() {
             {/* Lateral Pin Indicator Section */}
             <section
             ref={pinSectionRef}
-            className="relative flex h-screen w-full items-center justify-center overflow-hidden border-y border-dashed border-text-caption/30 bg-bg-screen"
+            className="relative flex h-screen w-full items-center justify-center overflow-hidden border-y border-dashed border-color-accent/30 bg-bg-screen"
             >
                 <div className="relative mx-auto flex w-full max-w-5xl items-center px-10">
                     {/* List & Indicator */}
                     <div className="relative pl-8 pr-10">
                     {/* Background Line */}
-                    <div className="absolute left-0 top-0 h-full w-[2px] bg-text-caption/20"></div>
+                    <div className="absolute left-0 top-0 h-full w-[3px] bg-color-accent/20"></div>
 
                     {/* Active Indicator Line */}
-                    <div className="indicator-fill absolute left-0 top-0 h-full w-[2px] bg-text-primary"></div>
+                    <div className="indicator-fill absolute left-0 top-0 h-full w-[3px] bg-color-primary"></div>
 
-                    <ul className="m-0 flex list-none flex-col gap-6 p-0 font-heading text-h4 text-text-primary">
+                    <ul className="m-0 flex list-none flex-col gap-6 p-0 font-heading text-h4 text-color-primary">
                         {steps.map((step) => (
                         <li key={step.id} className="step-item opacity-30">
                             {step.title}
@@ -173,9 +173,9 @@ export default function Process() {
                     <div className="relative h-[400px] flex-1">
                         {/* Step 1 */}
                         <div className="step-slide invisible absolute left-0 top-1/2 w-full -translate-y-1/2 opacity-0">
-                            <div className="flex h-[350px] w-full flex-col items-center justify-center rounded-lg border border-text-caption/20 bg-ds-accent/10">
-                                <span className="font-heading text-h5 text-text-primary">ILLUSTRATION PLACEHOLDER</span>
-                                <span className="mt-2 font-body text-body-sm text-text-caption">
+                            <div className="flex h-[350px] w-full flex-col items-center justify-center rounded-lg border border-color-accent/20 bg-color-accent/10">
+                                <span className="font-heading text-h5 text-color-primary">ILLUSTRATION PLACEHOLDER</span>
+                                <span className="mt-2 font-body text-body-sm text-color-accent">
                                     Analyze the problem, plan a solution.
                                 </span>
                             </div>
@@ -183,11 +183,11 @@ export default function Process() {
 
                         {/* Step 2 */}
                         <div className="step-slide invisible absolute left-0 top-1/2 w-full -translate-y-1/2 opacity-0">
-                            <div className="flex h-[350px] w-full flex-col items-center justify-center rounded-lg border border-text-caption/20 bg-text-caption/10">
-                                <span className="font-heading text-h4 text-text-primary text-center">
+                            <div className="flex h-[350px] w-full flex-col items-center justify-center rounded-lg border border-color-accent/20 bg-color-accent/10">
+                                <span className="font-heading text-h4 text-color-primary text-center">
                                     CAROUSEL<br />PLACEHOLDER
                                 </span>
-                                <span className="mt-4 max-w-[250px] text-center font-body text-body-sm text-text-caption">
+                                <span className="mt-4 max-w-[250px] text-center font-body text-body-sm text-color-accent">
                                     Making sure everything is aligned with the plan, design an interface that is consistent.
                                 </span>
                             </div>
@@ -195,11 +195,11 @@ export default function Process() {
 
                         {/* Step 3 */}
                         <div className="step-slide invisible absolute left-0 top-1/2 w-full -translate-y-1/2 opacity-0">
-                            <div className="flex h-[350px] w-full flex-col items-center justify-center rounded-lg border border-text-caption/20 bg-text-primary/10">
-                                <span className="font-heading text-h4 text-text-primary text-center">
+                            <div className="flex h-[350px] w-full flex-col items-center justify-center rounded-lg border border-color-accent/20 bg-color-accent/10">
+                                <span className="font-heading text-h4 text-color-primary text-center">
                                     CAROUSEL<br />PLACEHOLDER
                                 </span>
-                                <span className="mt-4 max-w-[250px] text-center font-body text-body-sm text-text-caption">
+                                <span className="mt-4 max-w-[250px] text-center font-body text-body-sm text-color-accent">
                                     Bridge the gap between concept and product. Code and breathe life into ideas.
                                 </span>
                             </div>
@@ -210,8 +210,8 @@ export default function Process() {
         </div>
 
         {/* Next Section Buffer */}
-        <section className="flex h-[200vh] w-full flex-col items-center justify-center bg-ds-accent/5">
-            <p className="font-heading text-h4 text-text-caption opacity-50">Next Section: MotionPath Waypoints</p>
+        <section className="flex h-[200vh] w-full flex-col items-center justify-center bg-bg-screen">
+            <p className="font-heading text-h4 text-color-accent opacity-50">Next Section: MotionPath Waypoints</p>
         </section>
 
         <ShutterOverlay ref={shutterRef} />
