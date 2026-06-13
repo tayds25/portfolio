@@ -1,10 +1,11 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { MotionPathPlugin } from "gsap/MotionPathPlugin";
 import { useGSAP } from "@gsap/react";
 import ShutterOverlay from "@/components/ui/ShutterOverlay";
 
@@ -12,14 +13,21 @@ import ShutterOverlay from "@/components/ui/ShutterOverlay";
 import step1Svg from "@/assets/process_page/step_1.svg";
 import step2Svg from "@/assets/process_page/step_2.svg";
 import step3Svg from "@/assets/process_page/step_3.svg";
+import mouseCursorSvg from "@/assets/process_page/mouse_cursor.svg";
 
-gsap.registerPlugin(ScrollTrigger);
+// Plugins
+gsap.registerPlugin(ScrollTrigger, MotionPathPlugin);
 
 export default function Process() {
     const router = useRouter();
     const shutterRef = useRef<HTMLDivElement | null>(null);
+
+    // Section Refs
     const containerRef = useRef<HTMLElement | null>(null);
     const pinSectionRef = useRef<HTMLElement | null>(null);
+    const waypointsSectionRef = useRef<HTMLElement | null>(null);
+    const cursorRef = useRef<HTMLDivElement | null>(null);
+    const carouselRefs = useRef<(HTMLDivElement | null)[]>([]); // Ref array for carousels
 
     const steps = [
         { id: "plan", title: "Step 1: Plan" },
@@ -29,7 +37,7 @@ export default function Process() {
 
     useGSAP(
         () => {
-        // Shutter Entry
+        // Shutter Transition
         if (shutterRef.current) {
             gsap.fromTo(
             shutterRef.current,
@@ -38,13 +46,13 @@ export default function Process() {
             );
         }
 
-        // Logic: Lateral Pin Indicator
+        // Lateral Pin Indicator Logic
         const listItems = gsap.utils.toArray<HTMLElement>(".step-item");
         const slides = gsap.utils.toArray<HTMLElement>(".step-slide");
         const fill = ".indicator-fill";
 
         if (pinSectionRef.current && listItems.length === 3 && slides.length === 3) {
-            const tl = gsap.timeline({
+            const pinTl = gsap.timeline({
             scrollTrigger: {
                 trigger: pinSectionRef.current,
                 start: "top top",
@@ -58,26 +66,111 @@ export default function Process() {
             gsap.set(listItems[0], { opacity: 1 });
             gsap.set(slides[0], { autoAlpha: 1 });
 
-            tl.to(fill, { scaleY: 1, ease: "none", duration: 4 }, 0);
+            pinTl.to(fill, { scaleY: 1, ease: "none", duration: 4 }, 0);
 
             // Step 1 -> Step 2
-            tl.to(listItems[0], { opacity: 0.3, duration: 0.5 }, 1)
+            pinTl.to(listItems[0], { opacity: 0.3, duration: 0.5 }, 1)
             .to(slides[0], { autoAlpha: 0, duration: 0.5 }, 1)
             .to(listItems[1], { opacity: 1, duration: 0.5 }, 1)
             .to(slides[1], { autoAlpha: 1, duration: 0.5 }, 1);
 
             // Step 2 -> Step 3
-            tl.to(listItems[1], { opacity: 0.3, duration: 0.5 }, 2.5)
+            pinTl.to(listItems[1], { opacity: 0.3, duration: 0.5 }, 2.5)
             .to(slides[1], { autoAlpha: 0, duration: 0.5 }, 2.5)
             .to(listItems[2], { opacity: 1, duration: 0.5 }, 2.5)
             .to(slides[2], { autoAlpha: 1, duration: 0.5 }, 2.5);
 
-            // Step 3 -> End
-            tl.to({}, { duration: 0.5 }, 3.5);
+            // Hold Step 3
+            pinTl.to({}, { duration: 0.5 }, 3.5);
+        }
+
+        // MotionPath Waypoints Logic
+        const cursor = cursorRef.current;
+        const waypointsContainer = waypointsSectionRef.current;
+        const markers = gsap.utils.toArray<HTMLElement>(".waypoint-marker", waypointsContainer);
+
+        if (cursor && waypointsContainer && markers.length > 0) {
+            const containerRect = waypointsContainer.getBoundingClientRect();
+
+            // Calculate precise coordinates independent of nested relative wrappers
+            const points = markers.map((marker) => {
+                const rect = marker.getBoundingClientRect();
+                return {
+                    x: rect.left - containerRect.left + rect.width / 2,
+                    y: rect.top - containerRect.top + rect.height / 2,
+                };
+            });
+
+            gsap.set(cursor, { x: points[0].x, y: points[0].y, xPercent: -50, yPercent: -50 });
+
+            const pathTl = gsap.timeline({
+            scrollTrigger: {
+                trigger: waypointsContainer,
+                start: "top center",
+                end: "bottom bottom",
+                scrub: 1,
+            },
+            });
+
+            pathTl.to(cursor, {
+            motionPath: {
+                path: points.slice(1),
+                curviness: 1.5,
+            },
+            ease: "none",
+            });
         }
         },
         { scope: containerRef }
     );
+
+    // Auto-play Carousel Logic
+    useEffect(() => {
+        const interval = setInterval(() => {
+            carouselRefs.current.forEach((carousel) => {
+                if (carousel && carousel.children.length > 1) {
+                    // Calculate slide width to determine current index
+                    const slideWidth =
+                        (carousel.children[1] as HTMLElement).offsetLeft -
+                        (carousel.children[0] as HTMLElement).offsetLeft;
+
+                    const currentIndex = Math.round(carousel.scrollLeft / slideWidth);
+                    let nextIndex = currentIndex + 1;
+
+                    // Loop back to the first slide seamlessly if we reach the end
+                    if (nextIndex >= carousel.children.length) {
+                        nextIndex = 0;
+                    }
+
+                    const targetSlide = carousel.children[nextIndex] as HTMLElement;
+
+                    // CRITICAL FIX: Calculate the exact centered scroll position for the target slide,
+                    // accounting for the `snap-center` CSS rule to prevent oversliding and yanking.
+                    let targetScroll = targetSlide.offsetLeft - (carousel.clientWidth / 2) + (targetSlide.offsetWidth / 2);
+
+                    // Clamp to ensure we never command GSAP to scroll out of bounds
+                    const maxScroll = carousel.scrollWidth - carousel.clientWidth;
+                    targetScroll = Math.max(0, Math.min(targetScroll, maxScroll));
+
+                    gsap.to(carousel, {
+                        scrollLeft: targetScroll,
+                        duration: 1.2,
+                        ease: "power3.inOut",
+                        overwrite: "auto",
+                        onStart: () => {
+                            carousel.style.scrollSnapType = "none";
+                        },
+                        onComplete: () => {
+                            // Restore native Tailwind `snap-x snap-mandatory` for manual swipes
+                            carousel.style.scrollSnapType = "";
+                        }
+                    });
+                }
+            });
+        }, 3500);
+
+        return () => clearInterval(interval);
+    }, []);
 
     const handleBackToHome = () => {
         if (shutterRef.current) {
@@ -97,11 +190,11 @@ export default function Process() {
     return (
         <main ref={containerRef} className="relative min-h-screen w-full bg-bg-screen">
 
-        {/* Navigation Layer */}
+        {/* Navigation */}
         <div className="absolute right-10 top-10 z-50 md:right-20 md:top-20">
             <button
             onClick={handleBackToHome}
-            className="cursor-pointer font-body text-body-reg text-color-primary transition-colors hover:text-color-accent"
+            className="cursor-pointer font-body text-body-reg text-text-caption transition-colors hover:text-color-accent"
             >
             close [x]
             </button>
@@ -115,7 +208,7 @@ export default function Process() {
             </h1>
 
             {/* Scroll Indicator */}
-            <div className="mt-16 flex flex-col items-center gap-3 opacity-60 text-color-accent">
+            <div className="mt-16 flex flex-col items-center gap-3 opacity-60">
             <svg
                 width="24"
                 height="40"
@@ -128,100 +221,175 @@ export default function Process() {
                 <circle cx="12" cy="10" r="3" fill="currentColor" className="animate-scroll-down fill-color-accent" />
             </svg>
 
-            <style
-                dangerouslySetInnerHTML={{
+            <style dangerouslySetInnerHTML={{
                 __html: `
-                    @keyframes scrollDown {
+                @keyframes scrollDown {
                     0% { transform: translateY(0); opacity: 0; }
                     20% { opacity: 1; }
                     60% { transform: translateY(12px); opacity: 1; }
                     80%, 100% { transform: translateY(12px); opacity: 0; }
-                    }
-                    .animate-scroll-down {
+                }
+                .animate-scroll-down {
                     animation: scrollDown 2s cubic-bezier(0.25, 1, 0.5, 1) infinite;
-                    }
+                }
                 `,
-                }}
-            />
+            }} />
 
-            <p className="font-body text-body-sm tracking-widest text-color-accent uppercase">
+            <p className="font-body text-body-sm tracking-widest text-text-caption">
                 scroll
             </p>
             </div>
         </section>
 
-        {/* Lateral Pin Indicator Section */}
+        {/* Lateral Pin Indicator */}
         <div className="relative w-full">
             <section
             ref={pinSectionRef}
-            className="relative flex h-screen w-full items-center justify-center overflow-hidden border-y border-dashed border-color-accent/30 bg-bg-screen"
+            className="relative flex h-screen w-full items-center justify-center overflow-hidden border-y border-dashed border-text-caption/30 bg-bg-screen"
             >
-                <div className="relative mx-auto flex w-full max-w-5xl items-center px-10">
+            <div className="relative mx-auto flex w-full max-w-5xl items-center px-10">
+                {/* Left Column */}
+                <div className="relative pl-8 pr-10 md:pr-30">
+                    <div className="absolute left-0 top-0 h-full w-[3px] bg-color-accent/20"></div>
+                    <div className="indicator-fill absolute left-0 top-0 h-full w-[3px] bg-color-primary"></div>
 
-                    {/* Left Column */}
-                    <div className="relative pl-8 pr-30">
-                        {/* Lateral Indicator */}
-                        <div className="absolute left-0 top-0 h-full w-[3px] bg-color-accent/20"></div>
-                        <div className="indicator-fill absolute left-0 top-0 h-full w-[3px] bg-color-primary"></div>
+                    <ul className="m-0 flex list-none flex-col gap-6 p-0 font-heading text-h4 text-color-primary">
+                        {steps.map((step) => (
+                        <li key={step.id} className="step-item opacity-30">
+                            {step.title}
+                        </li>
+                        ))}
+                    </ul>
+                </div>
 
-                        <ul className="m-0 flex list-none flex-col gap-6 p-0 font-heading text-h4 text-color-primary">
-                            {steps.map((step) => (
-                            <li key={step.id} className="step-item opacity-30">
-                                {step.title}
-                            </li>
-                            ))}
-                        </ul>
+                {/* Right Column */}
+                <div className="relative h-[400px] flex-1">
+
+                {/* Slide 1 */}
+                <div className="step-slide invisible absolute left-0 top-1/2 w-full -translate-y-1/2 opacity-0">
+                    <div className="flex h-[350px] w-full flex-col items-center justify-center rounded-lg border border-color-primary/50 bg-color-accent/10 p-6">
+                    <div className="relative h-48 w-full max-w-[280px]">
+                        <Image src={step1Svg} alt="Planning Phase" fill priority className="object-contain" />
                     </div>
-
-                    {/* Right Column */}
-                    <div className="relative h-[400px] flex-1">
-
-                        {/* Plan */}
-                        <div className="step-slide invisible absolute left-0 top-1/2 w-full -translate-y-1/2 opacity-0">
-                            <div className="flex h-[350px] w-full flex-col items-center justify-center rounded-lg border border-color-primary/50 bg-color-accent/10 p-6">
-                            <div className="relative h-48 w-full max-w-[280px]">
-                                <Image src={step1Svg} alt="Planning Phase" fill priority className="object-contain" />
-                            </div>
-                            <span className="mt-6 font-body text-body-sm text-color-primary">
-                                Analyze the problem, plan a solution.
-                            </span>
-                            </div>
-                        </div>
-
-                        {/* Design */}
-                        <div className="step-slide invisible absolute left-0 top-1/2 w-full -translate-y-1/2 opacity-0">
-                            <div className="flex h-[350px] w-full flex-col items-center justify-center rounded-lg border border-color-primary/50 bg-color-accent/10 p-6">
-                            <div className="relative h-48 w-full max-w-[280px]">
-                                <Image src={step2Svg} alt="Interface Design Phase" fill className="object-contain" />
-                            </div>
-                            <span className="mt-6 max-w-[250px] text-center font-body text-body-sm text-color-primary">
-                                Making sure everything is aligned with the plan, design a high-end interface.
-                            </span>
-                            </div>
-                        </div>
-
-                        {/* Code */}
-                        <div className="step-slide invisible absolute left-0 top-1/2 w-full -translate-y-1/2 opacity-0">
-                            <div className="flex h-[350px] w-full flex-col items-center justify-center rounded-lg border border-color-primary/50 bg-color-accent/10 p-6">
-                            <div className="relative h-48 w-full max-w-[280px]">
-                                <Image src={step3Svg} alt="Engineering Phase" fill className="object-contain" />
-                            </div>
-                            <span className="mt-6 max-w-[250px] text-center font-body text-body-sm text-color-primary">
-                                Bridge the gap between concept and product. Code and breathe life into ideas.
-                            </span>
-                            </div>
-                        </div>
-
+                    <span className="mt-6 font-body text-body-sm text-color-primary">
+                        Analyze the problem, plan a solution.
+                    </span>
                     </div>
                 </div>
+
+                {/* Slide 2 */}
+                <div className="step-slide invisible absolute left-0 top-1/2 w-full -translate-y-1/2 opacity-0">
+                    <div className="flex h-[350px] w-full flex-col items-center justify-center rounded-lg border border-color-primary/50 bg-color-accent/10 p-6">
+                    <div className="relative h-48 w-full max-w-[280px]">
+                        <Image src={step2Svg} alt="Interface Design Phase" fill className="object-contain" />
+                    </div>
+                    <span className="mt-6 max-w-[250px] text-center font-body text-body-sm text-color-primary">
+                        Making sure everything is aligned with the plan, design an interface that is consistent.
+                    </span>
+                    </div>
+                </div>
+
+                {/* Slide 3 */}
+                <div className="step-slide invisible absolute left-0 top-1/2 w-full -translate-y-1/2 opacity-0">
+                    <div className="flex h-[350px] w-full flex-col items-center justify-center rounded-lg border border-color-primary/50 bg-color-accent/10 p-6">
+                    <div className="relative h-48 w-full max-w-[280px]">
+                        <Image src={step3Svg} alt="Engineering Phase" fill className="object-contain" />
+                    </div>
+                    <span className="mt-6 max-w-[250px] text-center font-body text-body-sm text-color-primary">
+                        Bridge the gap between concept and product. Code and breathe life into ideas.
+                    </span>
+                    </div>
+                </div>
+
+                </div>
+            </div>
             </section>
         </div>
 
-        {/* Waypoints Section Placeholder */}
-        <section className="flex h-[200vh] w-full flex-col items-center justify-center bg-bg-screen">
-            <p className="font-heading text-h4 text-color-accent opacity-50">
-            Next Section: MotionPath Waypoints
-            </p>
+        {/* MotionPath Waypoints */}
+        <section ref={waypointsSectionRef} className="relative w-full overflow-hidden bg-bg-screen py-40 px-10 md:px-20">
+
+            {/* Animated Cursor */}
+            <div ref={cursorRef} className="absolute left-0 top-0 z-50 h-16 w-16 pointer-events-none drop-shadow-xl">
+            <Image src={mouseCursorSvg} alt="Animated Cursor" fill className="object-contain" />
+            </div>
+
+            <div className="mx-auto flex max-w-6xl flex-col gap-[30vh]">
+
+            {/* Step 1 */}
+            <div className="relative flex flex-col items-center text-center">
+                {/* Waypoint 1 */}
+                <div className="waypoint-marker absolute top-10 right-[30%] h-4 w-4 rounded-full opacity-0"></div>
+
+                <h2 className="font-heading text-[clamp(2rem,4vw,4rem)] text-text-primary mb-6">Step 1: Plan</h2>
+                <p className="max-w-xl font-body text-body-reg text-text-caption mb-16">
+                Every great interface starts with robust architecture. Here we map user flows, construct strict wireframes, and establish the structural logic of the application before a single line of code is written.
+                </p>
+
+                {/* Carousel 1 - Added 'relative' to fix DOM measurement math */}
+                <div
+                    ref={(el) => { carouselRefs.current[0] = el; }}
+                    className="relative flex w-full snap-x snap-mandatory overflow-x-auto pb-8 gap-6 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
+                >
+                {[1, 2, 3].map((slide) => (
+                    <div key={`plan-${slide}`} className="shrink-0 flex h-[400px] w-full md:w-[80%] items-center justify-center rounded-xl border border-text-caption/20 bg-ds-accent/5 snap-center">
+                    <span className="font-heading text-h5 text-text-primary opacity-30">WIREFRM_IMG_{slide}.PNG</span>
+                    </div>
+                ))}
+                </div>
+            </div>
+
+            {/* Step 2 */}
+            <div className="relative flex flex-col md:flex-row items-center gap-16">
+                <div className="flex-1">
+                {/* Waypoint 2 */}
+                <div className="waypoint-marker absolute top-10 left-[5%] h-4 w-4 rounded-full opacity-0"></div>
+
+                <h2 className="font-heading text-[clamp(2rem,4vw,4rem)] text-text-primary mb-6">Step 2: Design</h2>
+                <p className="font-body text-body-reg text-text-caption mb-8">
+                    Translating architectural wireframes into high-fidelity components. This phase is dedicated to establishing typography scales, interactive states, and a comprehensive design system that scales natively.
+                </p>
+                </div>
+
+                {/* Carousel 2 - Added 'relative' to fix DOM measurement math */}
+                <div
+                    ref={(el) => { carouselRefs.current[1] = el; }}
+                    className="relative flex w-full md:w-1/2 snap-x snap-mandatory overflow-x-auto pb-8 gap-6 [scrollbar-width:none]"
+                >
+                {[1, 2, 3].map((slide) => (
+                    <div key={`design-${slide}`} className="shrink-0 flex h-[400px] w-[90%] items-center justify-center rounded-xl border border-text-caption/20 bg-text-caption/5 snap-center">
+                    <span className="font-heading text-h5 text-text-primary opacity-30">FIGMA_MOCK_{slide}.PNG</span>
+                    </div>
+                ))}
+                </div>
+            </div>
+
+            {/* Step 3 */}
+            <div className="relative flex flex-col-reverse md:flex-row items-center gap-16">
+                {/* Carousel 3 - Added 'relative' to fix DOM measurement math */}
+                <div
+                    ref={(el) => { carouselRefs.current[2] = el; }}
+                    className="relative flex w-full md:w-1/2 snap-x snap-mandatory overflow-x-auto pb-8 gap-6 [scrollbar-width:none]"
+                >
+                {[1, 2, 3].map((slide) => (
+                    <div key={`code-${slide}`} className="shrink-0 flex h-[400px] w-[90%] items-center justify-center rounded-xl border border-text-caption/20 bg-text-primary/5 snap-center">
+                    <span className="font-heading text-h5 text-text-primary opacity-30">CODE_SNIP_{slide}.PNG</span>
+                    </div>
+                ))}
+                </div>
+
+                <div className="flex-1 text-left md:text-right">
+                {/* Waypoint 3 */}
+                <div className="waypoint-marker absolute top-10 right-[5%] h-4 w-4 rounded-full opacity-0"></div>
+
+                <h2 className="font-heading text-[clamp(2rem,4vw,4rem)] text-text-primary mb-6">Step 3: Code</h2>
+                <p className="font-body text-body-reg text-text-caption mb-8 md:ml-auto">
+                    Engineering the final product with React, Next.js, and GSAP. The focus here shifts to performant animations, accessible DOM structures, and ensuring the final build matches the design pixel-for-pixel.
+                </p>
+                </div>
+            </div>
+
+            </div>
         </section>
 
         <ShutterOverlay ref={shutterRef} />
