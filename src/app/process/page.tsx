@@ -179,6 +179,13 @@ export default function Process() {
         return () => clearInterval(interval);
     }, []);
 
+    const scrollToTop = () => {
+        window.scrollTo({
+            top: 0,
+            behavior: "smooth"
+        });
+    };
+
     const handleBackToHome = () => {
         if (shutterRef.current) {
         gsap.fromTo(
@@ -395,6 +402,48 @@ export default function Process() {
                 </div>
             </div>
         </section>
+
+        {/* Back to Top */}
+        <div className="flex w-full justify-center pb-20 pt-10 bg-bg-screen">
+            <button
+                onClick={scrollToTop}
+                className="group flex cursor-pointer flex-col items-center gap-3 opacity-60 transition-opacity hover:opacity-100"
+            >
+                <svg
+                    width="24"
+                    height="40"
+                    viewBox="0 0 24 40"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="stroke-color-primary transition-colors group-hover:stroke-color-accent"
+                >
+                    <rect x="1" y="1" width="22" height="38" rx="11" strokeWidth="1" stroke="currentColor" />
+
+                    <g className="animate-scroll-up">
+                        <path d="M8 18L12 14L16 18" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                        <path d="M12 14V26" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+                    </g>
+                </svg>
+
+                <style dangerouslySetInnerHTML={{
+                    __html: `
+                    @keyframes scrollUp {
+                        0% { transform: translateY(8px); opacity: 0; }
+                        20% { opacity: 1; }
+                        60% { transform: translateY(-4px); opacity: 1; }
+                        80%, 100% { transform: translateY(-4px); opacity: 0; }
+                    }
+                    .animate-scroll-up {
+                        animation: scrollUp 2s cubic-bezier(0.25, 1, 0.5, 1) infinite;
+                    }
+                    `,
+                }} />
+
+                <p className="font-body text-body-sm tracking-widest text-color-primary transition-colors group-hover:text-color-accent">
+                    back to top
+                </p>
+            </button>
+        </div>
 
         <ShutterOverlay ref={shutterRef} />
         </main>
