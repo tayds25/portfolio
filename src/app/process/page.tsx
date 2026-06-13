@@ -92,7 +92,6 @@ export default function Process() {
         if (cursor && waypointsContainer && markers.length > 0) {
             const containerRect = waypointsContainer.getBoundingClientRect();
 
-            // Calculate precise coordinates independent of nested relative wrappers
             const points = markers.map((marker) => {
                 const rect = marker.getBoundingClientRect();
                 return {
@@ -137,18 +136,15 @@ export default function Process() {
                     const currentIndex = Math.round(carousel.scrollLeft / slideWidth);
                     let nextIndex = currentIndex + 1;
 
-                    // Loop back to the first slide seamlessly if we reach the end
+                    // Loop back to the first slide
                     if (nextIndex >= carousel.children.length) {
                         nextIndex = 0;
                     }
 
                     const targetSlide = carousel.children[nextIndex] as HTMLElement;
-
-                    // CRITICAL FIX: Calculate the exact centered scroll position for the target slide,
-                    // accounting for the `snap-center` CSS rule to prevent oversliding and yanking.
                     let targetScroll = targetSlide.offsetLeft - (carousel.clientWidth / 2) + (targetSlide.offsetWidth / 2);
 
-                    // Clamp to ensure we never command GSAP to scroll out of bounds
+                    // Clamp
                     const maxScroll = carousel.scrollWidth - carousel.clientWidth;
                     targetScroll = Math.max(0, Math.min(targetScroll, maxScroll));
 
@@ -161,7 +157,6 @@ export default function Process() {
                             carousel.style.scrollSnapType = "none";
                         },
                         onComplete: () => {
-                            // Restore native Tailwind `snap-x snap-mandatory` for manual swipes
                             carousel.style.scrollSnapType = "";
                         }
                     });
@@ -194,50 +189,50 @@ export default function Process() {
         <div className="absolute right-10 top-10 z-50 md:right-20 md:top-20">
             <button
             onClick={handleBackToHome}
-            className="cursor-pointer font-body text-body-reg text-text-caption transition-colors hover:text-color-accent"
+            className="cursor-pointer font-body text-body-reg text-color-primary transition-colors hover:text-color-accent"
             >
-            close [x]
+                close [x]
             </button>
         </div>
 
         {/* Hero Section */}
         <section className="flex h-screen w-full flex-col items-center justify-center p-10 text-center md:p-20">
-            <h1 className="font-heading text-[clamp(2.5rem,5vw,5rem)] leading-tight text-color-primary">
-            so, what do i do?<br />
-            and how do i do it?
+            <h1 className="font-heading text-[clamp(2.5rem,5vw,5rem)] font-bold leading-tight text-color-primary">
+                so, what do i do?<br />
+                and how do i do it?
             </h1>
 
             {/* Scroll Indicator */}
             <div className="mt-16 flex flex-col items-center gap-3 opacity-60">
-            <svg
-                width="24"
-                height="40"
-                viewBox="0 0 24 40"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-                className="stroke-color-accent"
-            >
-                <rect x="1" y="1" width="22" height="38" rx="11" strokeWidth="1" stroke="currentColor" />
-                <circle cx="12" cy="10" r="3" fill="currentColor" className="animate-scroll-down fill-color-accent" />
-            </svg>
+                <svg
+                    width="24"
+                    height="40"
+                    viewBox="0 0 24 40"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="stroke-color-accent"
+                >
+                    <rect x="1" y="1" width="22" height="38" rx="11" strokeWidth="1" stroke="currentColor" />
+                    <circle cx="12" cy="10" r="3" fill="currentColor" className="animate-scroll-down fill-color-accent" />
+                </svg>
 
-            <style dangerouslySetInnerHTML={{
-                __html: `
-                @keyframes scrollDown {
-                    0% { transform: translateY(0); opacity: 0; }
-                    20% { opacity: 1; }
-                    60% { transform: translateY(12px); opacity: 1; }
-                    80%, 100% { transform: translateY(12px); opacity: 0; }
-                }
-                .animate-scroll-down {
-                    animation: scrollDown 2s cubic-bezier(0.25, 1, 0.5, 1) infinite;
-                }
-                `,
-            }} />
+                <style dangerouslySetInnerHTML={{
+                    __html: `
+                    @keyframes scrollDown {
+                        0% { transform: translateY(0); opacity: 0; }
+                        20% { opacity: 1; }
+                        60% { transform: translateY(12px); opacity: 1; }
+                        80%, 100% { transform: translateY(12px); opacity: 0; }
+                    }
+                    .animate-scroll-down {
+                        animation: scrollDown 2s cubic-bezier(0.25, 1, 0.5, 1) infinite;
+                    }
+                    `,
+                }} />
 
-            <p className="font-body text-body-sm tracking-widest text-text-caption">
-                scroll
-            </p>
+                <p className="font-body text-body-sm tracking-widest text-color-accent">
+                    scroll
+                </p>
             </div>
         </section>
 
@@ -245,64 +240,62 @@ export default function Process() {
         <div className="relative w-full">
             <section
             ref={pinSectionRef}
-            className="relative flex h-screen w-full items-center justify-center overflow-hidden border-y border-dashed border-text-caption/30 bg-bg-screen"
+            className="relative flex h-screen w-full items-center justify-center overflow-hidden border-y border-dashed border-color-accent/50 bg-bg-screen"
             >
-            <div className="relative mx-auto flex w-full max-w-5xl items-center px-10">
-                {/* Left Column */}
-                <div className="relative pl-8 pr-10 md:pr-30">
-                    <div className="absolute left-0 top-0 h-full w-[3px] bg-color-accent/20"></div>
-                    <div className="indicator-fill absolute left-0 top-0 h-full w-[3px] bg-color-primary"></div>
+                <div className="relative mx-auto flex w-full max-w-5xl items-center px-10">
+                    {/* Left Column */}
+                    <div className="relative pl-8 pr-10 md:pr-30">
+                        <div className="absolute left-0 top-0 h-full w-[3px] bg-color-accent/20"></div>
+                        <div className="indicator-fill absolute left-0 top-0 h-full w-[3px] bg-color-primary"></div>
 
-                    <ul className="m-0 flex list-none flex-col gap-6 p-0 font-heading text-h4 text-color-primary">
-                        {steps.map((step) => (
-                        <li key={step.id} className="step-item opacity-30">
-                            {step.title}
-                        </li>
-                        ))}
-                    </ul>
+                        <ul className="m-0 flex list-none flex-col gap-6 p-0 font-heading text-h4 text-color-primary">
+                            {steps.map((step) => (
+                            <li key={step.id} className="step-item opacity-30">
+                                {step.title}
+                            </li>
+                            ))}
+                        </ul>
+                    </div>
+
+                    {/* Right Column */}
+                    <div className="relative h-[400px] flex-1">
+                        {/* Slide 1 */}
+                        <div className="step-slide invisible absolute left-0 top-1/2 w-full -translate-y-1/2 opacity-0">
+                            <div className="flex h-[350px] w-full flex-col items-center justify-center rounded-lg border border-color-primary/50 bg-color-accent/10 p-6">
+                            <div className="relative h-48 w-full max-w-[280px]">
+                                <Image src={step1Svg} alt="Planning Phase" fill priority className="object-contain" />
+                            </div>
+                            <span className="mt-6 font-body text-body-sm text-color-primary">
+                                Analyze the problem, plan a solution.
+                            </span>
+                            </div>
+                        </div>
+
+                        {/* Slide 2 */}
+                        <div className="step-slide invisible absolute left-0 top-1/2 w-full -translate-y-1/2 opacity-0">
+                            <div className="flex h-[350px] w-full flex-col items-center justify-center rounded-lg border border-color-primary/50 bg-color-accent/10 p-6">
+                            <div className="relative h-48 w-full max-w-[280px]">
+                                <Image src={step2Svg} alt="Interface Design Phase" fill className="object-contain" />
+                            </div>
+                            <span className="mt-6 max-w-[250px] text-center font-body text-body-sm text-color-primary">
+                                Making sure everything is aligned with the plan, design an interface that is consistent.
+                            </span>
+                            </div>
+                        </div>
+
+                        {/* Slide 3 */}
+                        <div className="step-slide invisible absolute left-0 top-1/2 w-full -translate-y-1/2 opacity-0">
+                            <div className="flex h-[350px] w-full flex-col items-center justify-center rounded-lg border border-color-primary/50 bg-color-accent/10 p-6">
+                            <div className="relative h-48 w-full max-w-[280px]">
+                                <Image src={step3Svg} alt="Engineering Phase" fill className="object-contain" />
+                            </div>
+                            <span className="mt-6 max-w-[250px] text-center font-body text-body-sm text-color-primary">
+                                Bridge the gap between concept and product. Code and breathe life into ideas.
+                            </span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-
-                {/* Right Column */}
-                <div className="relative h-[400px] flex-1">
-
-                {/* Slide 1 */}
-                <div className="step-slide invisible absolute left-0 top-1/2 w-full -translate-y-1/2 opacity-0">
-                    <div className="flex h-[350px] w-full flex-col items-center justify-center rounded-lg border border-color-primary/50 bg-color-accent/10 p-6">
-                    <div className="relative h-48 w-full max-w-[280px]">
-                        <Image src={step1Svg} alt="Planning Phase" fill priority className="object-contain" />
-                    </div>
-                    <span className="mt-6 font-body text-body-sm text-color-primary">
-                        Analyze the problem, plan a solution.
-                    </span>
-                    </div>
-                </div>
-
-                {/* Slide 2 */}
-                <div className="step-slide invisible absolute left-0 top-1/2 w-full -translate-y-1/2 opacity-0">
-                    <div className="flex h-[350px] w-full flex-col items-center justify-center rounded-lg border border-color-primary/50 bg-color-accent/10 p-6">
-                    <div className="relative h-48 w-full max-w-[280px]">
-                        <Image src={step2Svg} alt="Interface Design Phase" fill className="object-contain" />
-                    </div>
-                    <span className="mt-6 max-w-[250px] text-center font-body text-body-sm text-color-primary">
-                        Making sure everything is aligned with the plan, design an interface that is consistent.
-                    </span>
-                    </div>
-                </div>
-
-                {/* Slide 3 */}
-                <div className="step-slide invisible absolute left-0 top-1/2 w-full -translate-y-1/2 opacity-0">
-                    <div className="flex h-[350px] w-full flex-col items-center justify-center rounded-lg border border-color-primary/50 bg-color-accent/10 p-6">
-                    <div className="relative h-48 w-full max-w-[280px]">
-                        <Image src={step3Svg} alt="Engineering Phase" fill className="object-contain" />
-                    </div>
-                    <span className="mt-6 max-w-[250px] text-center font-body text-body-sm text-color-primary">
-                        Bridge the gap between concept and product. Code and breathe life into ideas.
-                    </span>
-                    </div>
-                </div>
-
-                </div>
-            </div>
             </section>
         </div>
 
@@ -311,84 +304,83 @@ export default function Process() {
 
             {/* Animated Cursor */}
             <div ref={cursorRef} className="absolute left-0 top-0 z-50 h-16 w-16 pointer-events-none drop-shadow-xl">
-            <Image src={mouseCursorSvg} alt="Animated Cursor" fill className="object-contain" />
+                <Image src={mouseCursorSvg} alt="Animated Cursor" fill className="object-contain" />
             </div>
 
             <div className="mx-auto flex max-w-6xl flex-col gap-[30vh]">
+                {/* Step 1 */}
+                <div className="relative flex flex-col items-center text-center">
+                    {/* Waypoint 1 */}
+                    <div className="waypoint-marker absolute top-10 right-[30%] h-4 w-4 rounded-full opacity-0"></div>
 
-            {/* Step 1 */}
-            <div className="relative flex flex-col items-center text-center">
-                {/* Waypoint 1 */}
-                <div className="waypoint-marker absolute top-10 right-[30%] h-4 w-4 rounded-full opacity-0"></div>
+                    <h2 className="font-heading text-[clamp(2rem,4vw,4rem)] font-bold text-color-primary mb-6">Step 1: Plan</h2>
+                    <p className="max-w-xl font-body text-body-reg text-color-accent mb-16">
+                        Great interfaces begin with great architecture.<br />
+                        I map user flows, create wireframes, and define the logic before development begins.
+                    </p>
 
-                <h2 className="font-heading text-[clamp(2rem,4vw,4rem)] text-text-primary mb-6">Step 1: Plan</h2>
-                <p className="max-w-xl font-body text-body-reg text-text-caption mb-16">
-                Every great interface starts with robust architecture. Here we map user flows, construct strict wireframes, and establish the structural logic of the application before a single line of code is written.
-                </p>
-
-                {/* Carousel 1 - Added 'relative' to fix DOM measurement math */}
-                <div
-                    ref={(el) => { carouselRefs.current[0] = el; }}
-                    className="relative flex w-full snap-x snap-mandatory overflow-x-auto pb-8 gap-6 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
-                >
-                {[1, 2, 3].map((slide) => (
-                    <div key={`plan-${slide}`} className="shrink-0 flex h-[400px] w-full md:w-[80%] items-center justify-center rounded-xl border border-text-caption/20 bg-ds-accent/5 snap-center">
-                    <span className="font-heading text-h5 text-text-primary opacity-30">WIREFRM_IMG_{slide}.PNG</span>
+                    {/* Carousel 1 */}
+                    <div
+                        ref={(el) => { carouselRefs.current[0] = el; }}
+                        className="relative flex w-full snap-x snap-mandatory overflow-x-auto pb-8 gap-6 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
+                    >
+                        {[1, 2, 3].map((slide) => (
+                            <div key={`plan-${slide}`} className="shrink-0 flex h-[400px] w-full md:w-[80%] items-center justify-center rounded-xl border border-text-caption/20 bg-ds-accent/5 snap-center">
+                            <span className="font-heading text-h5 text-color-primary opacity-30">WIREFRM_IMG_{slide}.PNG</span>
+                            </div>
+                        ))}
                     </div>
-                ))}
-                </div>
-            </div>
-
-            {/* Step 2 */}
-            <div className="relative flex flex-col md:flex-row items-center gap-16">
-                <div className="flex-1">
-                {/* Waypoint 2 */}
-                <div className="waypoint-marker absolute top-10 left-[5%] h-4 w-4 rounded-full opacity-0"></div>
-
-                <h2 className="font-heading text-[clamp(2rem,4vw,4rem)] text-text-primary mb-6">Step 2: Design</h2>
-                <p className="font-body text-body-reg text-text-caption mb-8">
-                    Translating architectural wireframes into high-fidelity components. This phase is dedicated to establishing typography scales, interactive states, and a comprehensive design system that scales natively.
-                </p>
                 </div>
 
-                {/* Carousel 2 - Added 'relative' to fix DOM measurement math */}
-                <div
-                    ref={(el) => { carouselRefs.current[1] = el; }}
-                    className="relative flex w-full md:w-1/2 snap-x snap-mandatory overflow-x-auto pb-8 gap-6 [scrollbar-width:none]"
-                >
-                {[1, 2, 3].map((slide) => (
-                    <div key={`design-${slide}`} className="shrink-0 flex h-[400px] w-[90%] items-center justify-center rounded-xl border border-text-caption/20 bg-text-caption/5 snap-center">
-                    <span className="font-heading text-h5 text-text-primary opacity-30">FIGMA_MOCK_{slide}.PNG</span>
+                {/* Step 2 */}
+                <div className="relative flex flex-col md:flex-row items-center gap-16">
+                    <div className="flex-1">
+                        {/* Waypoint 2 */}
+                        <div className="waypoint-marker absolute top-10 left-[5%] h-4 w-4 rounded-full opacity-0"></div>
+
+                        <h2 className="font-heading text-[clamp(2rem,4vw,4rem)] font-bold text-color-primary mb-6">Step 2: Design</h2>
+                        <p className="font-body text-body-reg text-color-accent mb-8">
+                            Translating architectural wireframes into high-fidelity components, establishing typography scales, defining interactive states, and creating a comprehensive design system that scales effectively.
+                        </p>
                     </div>
-                ))}
-                </div>
-            </div>
 
-            {/* Step 3 */}
-            <div className="relative flex flex-col-reverse md:flex-row items-center gap-16">
-                {/* Carousel 3 - Added 'relative' to fix DOM measurement math */}
-                <div
-                    ref={(el) => { carouselRefs.current[2] = el; }}
-                    className="relative flex w-full md:w-1/2 snap-x snap-mandatory overflow-x-auto pb-8 gap-6 [scrollbar-width:none]"
-                >
-                {[1, 2, 3].map((slide) => (
-                    <div key={`code-${slide}`} className="shrink-0 flex h-[400px] w-[90%] items-center justify-center rounded-xl border border-text-caption/20 bg-text-primary/5 snap-center">
-                    <span className="font-heading text-h5 text-text-primary opacity-30">CODE_SNIP_{slide}.PNG</span>
+                    {/* Carousel 2 */}
+                    <div
+                        ref={(el) => { carouselRefs.current[1] = el; }}
+                        className="relative flex w-full md:w-1/2 snap-x snap-mandatory overflow-x-auto pb-8 gap-6 [scrollbar-width:none]"
+                    >
+                        {[1, 2, 3].map((slide) => (
+                            <div key={`design-${slide}`} className="shrink-0 flex h-[400px] w-[90%] items-center justify-center rounded-xl border border-text-caption/20 bg-text-caption/5 snap-center">
+                            <span className="font-heading text-h5 text-color-primary opacity-30">FIGMA_MOCK_{slide}.PNG</span>
+                            </div>
+                        ))}
                     </div>
-                ))}
                 </div>
 
-                <div className="flex-1 text-left md:text-right">
-                {/* Waypoint 3 */}
-                <div className="waypoint-marker absolute top-10 right-[5%] h-4 w-4 rounded-full opacity-0"></div>
+                {/* Step 3 */}
+                <div className="relative flex flex-col-reverse md:flex-row items-center gap-16">
+                    {/* Carousel 3 */}
+                    <div
+                        ref={(el) => { carouselRefs.current[2] = el; }}
+                        className="relative flex w-full md:w-1/2 snap-x snap-mandatory overflow-x-auto pb-8 gap-6 [scrollbar-width:none]"
+                    >
+                        {[1, 2, 3].map((slide) => (
+                            <div key={`code-${slide}`} className="shrink-0 flex h-[400px] w-[90%] items-center justify-center rounded-xl border border-text-caption/20 bg-text-primary/5 snap-center">
+                            <span className="font-heading text-h5 text-color-primary opacity-30">CODE_SNIP_{slide}.PNG</span>
+                            </div>
+                        ))}
+                    </div>
 
-                <h2 className="font-heading text-[clamp(2rem,4vw,4rem)] text-text-primary mb-6">Step 3: Code</h2>
-                <p className="font-body text-body-reg text-text-caption mb-8 md:ml-auto">
-                    Engineering the final product with React, Next.js, and GSAP. The focus here shifts to performant animations, accessible DOM structures, and ensuring the final build matches the design pixel-for-pixel.
-                </p>
+                    <div className="flex-1 text-left md:text-right">
+                        {/* Waypoint 3 */}
+                        <div className="waypoint-marker absolute top-10 right-[5%] h-4 w-4 rounded-full opacity-0"></div>
+
+                        <h2 className="font-heading text-[clamp(2rem,4vw,4rem)] text-color-primary font-bold mb-6">Step 3: Code</h2>
+                        <p className="font-body text-body-reg text-color-accent mb-8 md:ml-auto">
+                            Engineering the final product through clean, maintainable code. The focus here shifts to performance and ensuring the final build matches the design and ideas behind it.
+                        </p>
+                    </div>
                 </div>
-            </div>
-
             </div>
         </section>
 
