@@ -33,7 +33,7 @@
 @layer base {
   html, body {
     background-color: var(--color-bg-screen);
-    color: var(--color-landing-primary);
+    color: var(--color-color-primary);
     font-family: var(--font-body);
     line-height: 1.2;
 
