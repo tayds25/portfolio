@@ -2,21 +2,25 @@
 
 import { useRef } from "react";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
 import ShutterOverlay from "@/components/ui/ShutterOverlay";
+
+// Assets
+import step1Svg from "@/assets/process_page/step_1.svg";
+import step2Svg from "@/assets/process_page/step_2.svg";
+import step3Svg from "@/assets/process_page/step_3.svg";
 
 gsap.registerPlugin(ScrollTrigger);
 
 export default function Process() {
     const router = useRouter();
     const shutterRef = useRef<HTMLDivElement | null>(null);
-
     const containerRef = useRef<HTMLElement | null>(null);
     const pinSectionRef = useRef<HTMLElement | null>(null);
 
-    // Steps for Lateral Pin Indicator
     const steps = [
         { id: "plan", title: "Step 1: Plan" },
         { id: "design", title: "Step 2: Design" },
@@ -25,7 +29,7 @@ export default function Process() {
 
     useGSAP(
         () => {
-        // 1. Shutter Entry
+        // Shutter Entry
         if (shutterRef.current) {
             gsap.fromTo(
             shutterRef.current,
@@ -34,7 +38,7 @@ export default function Process() {
             );
         }
 
-        // 2. Logic: Lateral Pin Indicator
+        // Logic: Lateral Pin Indicator
         const listItems = gsap.utils.toArray<HTMLElement>(".step-item");
         const slides = gsap.utils.toArray<HTMLElement>(".step-slide");
         const fill = ".indicator-fill";
@@ -68,7 +72,7 @@ export default function Process() {
             .to(listItems[2], { opacity: 1, duration: 0.5 }, 2.5)
             .to(slides[2], { autoAlpha: 1, duration: 0.5 }, 2.5);
 
-            // Hold on Step 3
+            // Step 3 -> End
             tl.to({}, { duration: 0.5 }, 3.5);
         }
         },
@@ -92,11 +96,12 @@ export default function Process() {
 
     return (
         <main ref={containerRef} className="relative min-h-screen w-full bg-bg-screen">
-        {/* Close Button */}
+
+        {/* Navigation Layer */}
         <div className="absolute right-10 top-10 z-50 md:right-20 md:top-20">
             <button
             onClick={handleBackToHome}
-            className="cursor-pointer font-body text-body-reg text-text-caption transition-colors hover:text-color-accent"
+            className="cursor-pointer font-body text-body-reg text-color-primary transition-colors hover:text-color-accent"
             >
             close [x]
             </button>
@@ -117,101 +122,106 @@ export default function Process() {
                 viewBox="0 0 24 40"
                 fill="none"
                 xmlns="http://www.w3.org/2000/svg"
-                className="stroke-text-caption"
+                className="stroke-color-accent"
             >
                 <rect x="1" y="1" width="22" height="38" rx="11" strokeWidth="1" stroke="currentColor" />
-                <circle cx="12" cy="10" r="3" fill="currentColor" className="animate-scroll-down fill-text-caption" />
+                <circle cx="12" cy="10" r="3" fill="currentColor" className="animate-scroll-down fill-color-accent" />
             </svg>
 
             <style
                 dangerouslySetInnerHTML={{
                 __html: `
-                        @keyframes scrollDown {
-                        0% { transform: translateY(0); opacity: 0; }
-                        20% { opacity: 1; }
-                        60% { transform: translateY(12px); opacity: 1; }
-                        80%, 100% { transform: translateY(12px); opacity: 0; }
-                        }
-                        .animate-scroll-down {
-                        animation: scrollDown 2s cubic-bezier(0.25, 1, 0.5, 1) infinite;
-                        }
-                    `,
+                    @keyframes scrollDown {
+                    0% { transform: translateY(0); opacity: 0; }
+                    20% { opacity: 1; }
+                    60% { transform: translateY(12px); opacity: 1; }
+                    80%, 100% { transform: translateY(12px); opacity: 0; }
+                    }
+                    .animate-scroll-down {
+                    animation: scrollDown 2s cubic-bezier(0.25, 1, 0.5, 1) infinite;
+                    }
+                `,
                 }}
             />
 
-            <p className="font-body text-body-sm tracking-widest text-text-caption uppercase">
+            <p className="font-body text-body-sm tracking-widest text-color-accent uppercase">
                 scroll
             </p>
             </div>
         </section>
 
+        {/* Lateral Pin Indicator Section */}
         <div className="relative w-full">
-            {/* Lateral Pin Indicator Section */}
             <section
             ref={pinSectionRef}
             className="relative flex h-screen w-full items-center justify-center overflow-hidden border-y border-dashed border-color-accent/30 bg-bg-screen"
             >
                 <div className="relative mx-auto flex w-full max-w-5xl items-center px-10">
-                    {/* List & Indicator */}
-                    <div className="relative pl-8 pr-10">
-                    {/* Background Line */}
-                    <div className="absolute left-0 top-0 h-full w-[3px] bg-color-accent/20"></div>
 
-                    {/* Active Indicator Line */}
-                    <div className="indicator-fill absolute left-0 top-0 h-full w-[3px] bg-color-primary"></div>
+                    {/* Left Column */}
+                    <div className="relative pl-8 pr-30">
+                        {/* Lateral Indicator */}
+                        <div className="absolute left-0 top-0 h-full w-[3px] bg-color-accent/20"></div>
+                        <div className="indicator-fill absolute left-0 top-0 h-full w-[3px] bg-color-primary"></div>
 
-                    <ul className="m-0 flex list-none flex-col gap-6 p-0 font-heading text-h4 text-color-primary">
-                        {steps.map((step) => (
-                        <li key={step.id} className="step-item opacity-30">
-                            {step.title}
-                        </li>
-                        ))}
-                    </ul>
+                        <ul className="m-0 flex list-none flex-col gap-6 p-0 font-heading text-h4 text-color-primary">
+                            {steps.map((step) => (
+                            <li key={step.id} className="step-item opacity-30">
+                                {step.title}
+                            </li>
+                            ))}
+                        </ul>
                     </div>
 
-                    {/* Slides */}
+                    {/* Right Column */}
                     <div className="relative h-[400px] flex-1">
-                        {/* Step 1 */}
+
+                        {/* Plan */}
                         <div className="step-slide invisible absolute left-0 top-1/2 w-full -translate-y-1/2 opacity-0">
-                            <div className="flex h-[350px] w-full flex-col items-center justify-center rounded-lg border border-color-accent/20 bg-color-accent/10">
-                                <span className="font-heading text-h5 text-color-primary">ILLUSTRATION PLACEHOLDER</span>
-                                <span className="mt-2 font-body text-body-sm text-color-accent">
-                                    Analyze the problem, plan a solution.
-                                </span>
+                            <div className="flex h-[350px] w-full flex-col items-center justify-center rounded-lg border border-color-primary/50 bg-color-accent/10 p-6">
+                            <div className="relative h-48 w-full max-w-[280px]">
+                                <Image src={step1Svg} alt="Planning Phase" fill priority className="object-contain" />
+                            </div>
+                            <span className="mt-6 font-body text-body-sm text-color-primary">
+                                Analyze the problem, plan a solution.
+                            </span>
                             </div>
                         </div>
 
-                        {/* Step 2 */}
+                        {/* Design */}
                         <div className="step-slide invisible absolute left-0 top-1/2 w-full -translate-y-1/2 opacity-0">
-                            <div className="flex h-[350px] w-full flex-col items-center justify-center rounded-lg border border-color-accent/20 bg-color-accent/10">
-                                <span className="font-heading text-h4 text-color-primary text-center">
-                                    CAROUSEL<br />PLACEHOLDER
-                                </span>
-                                <span className="mt-4 max-w-[250px] text-center font-body text-body-sm text-color-accent">
-                                    Making sure everything is aligned with the plan, design an interface that is consistent.
-                                </span>
+                            <div className="flex h-[350px] w-full flex-col items-center justify-center rounded-lg border border-color-primary/50 bg-color-accent/10 p-6">
+                            <div className="relative h-48 w-full max-w-[280px]">
+                                <Image src={step2Svg} alt="Interface Design Phase" fill className="object-contain" />
+                            </div>
+                            <span className="mt-6 max-w-[250px] text-center font-body text-body-sm text-color-primary">
+                                Making sure everything is aligned with the plan, design a high-end interface.
+                            </span>
                             </div>
                         </div>
 
-                        {/* Step 3 */}
+                        {/* Code */}
                         <div className="step-slide invisible absolute left-0 top-1/2 w-full -translate-y-1/2 opacity-0">
-                            <div className="flex h-[350px] w-full flex-col items-center justify-center rounded-lg border border-color-accent/20 bg-color-accent/10">
-                                <span className="font-heading text-h4 text-color-primary text-center">
-                                    CAROUSEL<br />PLACEHOLDER
-                                </span>
-                                <span className="mt-4 max-w-[250px] text-center font-body text-body-sm text-color-accent">
-                                    Bridge the gap between concept and product. Code and breathe life into ideas.
-                                </span>
+                            <div className="flex h-[350px] w-full flex-col items-center justify-center rounded-lg border border-color-primary/50 bg-color-accent/10 p-6">
+                            <div className="relative h-48 w-full max-w-[280px]">
+                                <Image src={step3Svg} alt="Engineering Phase" fill className="object-contain" />
+                            </div>
+                            <span className="mt-6 max-w-[250px] text-center font-body text-body-sm text-color-primary">
+                                Bridge the gap between concept and product. Code and breathe life into ideas.
+                            </span>
                             </div>
                         </div>
+
                     </div>
                 </div>
             </section>
         </div>
 
-        {/* Next Section Buffer */}
+        {/* Waypoints Section Placeholder */}
         <section className="flex h-[200vh] w-full flex-col items-center justify-center bg-bg-screen">
-            <p className="font-heading text-h4 text-color-accent opacity-50">Next Section: MotionPath Waypoints</p>
+            <p className="font-heading text-h4 text-color-accent opacity-50">
+            Next Section: MotionPath Waypoints
+            </p>
         </section>
 
         <ShutterOverlay ref={shutterRef} />
