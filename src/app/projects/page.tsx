@@ -7,7 +7,6 @@ import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import ShutterOverlay from "@/components/ui/ShutterOverlay";
 
-// Aristide-Inspired Data Architecture
 const projects = [
   {
     id: "gait-analysis",
@@ -25,7 +24,7 @@ const projects = [
       "https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=800&auto=format&fit=crop"
     ],
     stack: ["Python", "MediaPipe", "React", "FastAPI"],
-    links: { github: "https://github.com" }
+    links: { github: "https://github.com/tayds25/Mediapipe-Gait-Analysis" }
   },
   {
     id: "certified-by-tay",
@@ -43,43 +42,8 @@ const projects = [
       "https://images.unsplash.com/photo-1498050108023-c5249f4df085?q=80&w=800&auto=format&fit=crop"
     ],
     stack: ["Next.js", "Tailwind CSS", "Drizzle ORM", "Figma"],
-    links: { website: "https://certifiedbytay.com", github: "https://github.com" }
+    links: { website: "https://certifiedbytay.com", github: "https://github.com/tayds25/certified-by-tay" }
   },
-  {
-    id: "cup-experience",
-    title: "Cambridge Design",
-    category: "UX/UI Design",
-    year: "2026",
-    status: "Completed",
-    completionDate: "April 2026",
-    client: "Cambridge University Press",
-    role: "Experience Design Intern",
-    description: "Translated complex educational architectures into high-end, accessible digital interfaces to bridge the gap between users and academic tools.",
-    images: [
-      "https://images.unsplash.com/photo-1586717791821-3f44a563fa4c?q=80&w=800&auto=format&fit=crop",
-      "https://images.unsplash.com/photo-1611162617474-5b21e879e113?q=80&w=800&auto=format&fit=crop",
-      "https://images.unsplash.com/photo-1558655146-d09347e92766?q=80&w=800&auto=format&fit=crop"
-    ],
-    stack: ["Figma", "Design Systems", "User Research"],
-    links: { website: "https://cambridge.org" }
-  },
-  {
-    id: "financial-infra",
-    title: "Financial Infra",
-    category: "DevOps & Architecture",
-    year: "2026",
-    status: "Maintained",
-    completionDate: "Feb 2026",
-    client: "Internal Infrastructure",
-    role: "Systems Architect",
-    description: "Deployed a self-hosted financial management architecture via WSL2 and Ubuntu, integrating secure tracking methodologies.",
-    images: [
-      "https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=800&auto=format&fit=crop",
-      "https://images.unsplash.com/photo-1526304640581-d334cdbbf45e?q=80&w=800&auto=format&fit=crop",
-      "https://images.unsplash.com/photo-1607799279861-4ddf4c80b5e5?q=80&w=800&auto=format&fit=crop"
-    ],
-    stack: ["Linux", "Docker", "WSL2", "Bash"],
-  }
 ];
 
 export default function Projects() {
@@ -106,12 +70,12 @@ export default function Projects() {
   const mousePos = useRef({ x: 0, y: 0 });
 
   useGSAP(() => {
-    // 1. Shutter Entry
+    // Shutter Entry
     if (shutterRef.current) {
       gsap.fromTo(shutterRef.current, { yPercent: 0 }, { yPercent: -100, duration: 0.6, ease: "power3.inOut" });
     }
 
-    // 2. Resilient Cursor Trailing
+    // Resilient Cursor Trailing
     const handleMouseMove = (e: MouseEvent) => {
       mousePos.current = { x: e.clientX, y: e.clientY };
 
@@ -130,7 +94,7 @@ export default function Projects() {
     return () => window.removeEventListener("mousemove", handleMouseMove);
   }, { scope: containerRef });
 
-  // Handle Hover Previews
+  // Hover Preview
   const handleMouseEnter = (index: number) => {
     if (isExpanded.current) return;
     setHoveredIndex(index);
@@ -143,20 +107,20 @@ export default function Projects() {
     gsap.to(floatingImageRef.current, { autoAlpha: 0, scale: 0.8, duration: 0.4, ease: "power3.in" });
   };
 
-  // --- THE SHARED ELEMENT TRANSITION (EXPAND TO CENTER) ---
+  // Preview Expand
   const handleProjectClick = (index: number) => {
     if (isExpanded.current) return;
     isExpanded.current = true;
     setClickedIndex(index);
-    setActiveImageIndex(0); // Reset center carousel to the first image
+    setActiveImageIndex(0);
 
     const tl = gsap.timeline();
 
-    // 1. Fade out the list and preview meta
+    // List Fade Out
     tl.to(listRef.current, { x: -50, autoAlpha: 0, duration: 0.5, ease: "power3.inOut" }, 0)
       .to(previewMetaRef.current, { x: 50, autoAlpha: 0, duration: 0.5, ease: "power3.inOut" }, 0)
 
-    // 2. Morph the cursor image directly to the dead center of the screen
+    // Morph Cursor Image
       .to(floatingImageRef.current, {
         x: window.innerWidth / 2,
         y: window.innerHeight / 2 - 60,
@@ -168,13 +132,13 @@ export default function Projects() {
         overwrite: "auto"
       }, 0)
 
-    // 3. Reveal the Aristide Layout Elements
+    // Layout Elements for Detailed View
       .fromTo(expandedTitleRef.current, { autoAlpha: 0, x: -30 }, { autoAlpha: 1, x: 0, duration: 0.6, ease: "power3.out" }, 0.4)
       .fromTo(expandedThumbnailsRef.current, { autoAlpha: 0, x: 30 }, { autoAlpha: 1, x: 0, duration: 0.6, ease: "power3.out" }, 0.4)
       .fromTo(expandedBottomMetaRef.current, { autoAlpha: 0, y: 30 }, { autoAlpha: 1, y: 0, duration: 0.6, ease: "power3.out" }, 0.5);
   };
 
-  // --- REVERSE THE TRANSITION (COLLAPSE BACK TO CURSOR) ---
+  // Transition Reverse for Back Button
   const handleBackClick = () => {
     const tl = gsap.timeline({
       onComplete: () => {
@@ -187,10 +151,10 @@ export default function Projects() {
       }
     });
 
-    // 1. Hide the Aristide Layout Elements
+    // Collapse Layout Elements
     tl.to([expandedTitleRef.current, expandedThumbnailsRef.current, expandedBottomMetaRef.current], { autoAlpha: 0, duration: 0.3 }, 0)
 
-    // 2. Shrink the Hero Image back to the user's cursor
+    // Shrink the Image back
       .to(floatingImageRef.current, {
         x: mousePos.current.x,
         y: mousePos.current.y,
@@ -202,7 +166,7 @@ export default function Projects() {
         overwrite: "auto"
       }, 0.1)
 
-    // 3. Fade the list and previews back in
+    // Fade In List
       .to(listRef.current, { x: 0, autoAlpha: 1, duration: 0.5, ease: "power3.out" }, 0.4)
       .to(previewMetaRef.current, { x: 0, autoAlpha: 1, duration: 0.5, ease: "power3.out" }, 0.4);
   };
@@ -218,7 +182,7 @@ export default function Projects() {
   return (
     <main ref={containerRef} className="relative flex h-screen w-full overflow-hidden bg-bg-screen">
 
-      {/* Global Contextual Navigation Button */}
+      {/* Close Button */}
       <div className="absolute right-10 top-10 z-50 md:right-20 md:top-20">
         <button
           onClick={clickedIndex !== null ? handleBackClick : handleBackToHome}
@@ -228,7 +192,7 @@ export default function Projects() {
         </button>
       </div>
 
-      {/* --- THE CENTER STAGE HERO / CURSOR TRAIL --- */}
+      {/* Preview Floating Image */}
       <div
         ref={floatingImageRef}
         className="pointer-events-none fixed left-0 top-0 z-20 h-[400px] w-[300px] -translate-x-1/2 -translate-y-1/2 overflow-hidden rounded-2xl opacity-0 md:h-[500px] md:w-[400px]"
@@ -255,12 +219,10 @@ export default function Projects() {
         ))}
       </div>
 
-      {/* ========================================= */}
-      {/* STATE 1: LIST & PREVIEW (Fades out on Click) */}
-      {/* ========================================= */}
+      {/* Preview Mode */}
       <div className="relative z-10 flex h-full w-full flex-col md:flex-row pointer-events-none">
 
-        {/* Left Side: The Title List */}
+        {/* Left Side: Project List */}
         <div ref={listRef} className="flex h-full w-full flex-col justify-center pl-10 md:w-1/2 md:pl-20 pointer-events-auto">
           <p className="mb-10 font-body text-body-reg text-color-accent">selected works</p>
           <div className="flex flex-col gap-4">
@@ -319,12 +281,9 @@ export default function Projects() {
         </div>
       </div>
 
-      {/* ========================================= */}
-      {/* STATE 2: ARISTIDE EXPANDED LAYOUT */}
-      {/* ========================================= */}
+      {/* Expanded Detail View */}
 
-      {/* MODIFIED: Left Anchor Vertical Massive Title */}
-      {/* Uses writing-mode to perfectly align bounding boxes vertically, and rotate-180 to read bottom-to-top */}
+      {/* Left Anchor Title */}
       <div
         ref={expandedTitleRef}
         className="invisible opacity-0 absolute top-1/2 -translate-y-1/2 left-8 md:left-16 z-10 pointer-events-none"
@@ -334,7 +293,7 @@ export default function Projects() {
         </h1>
       </div>
 
-      {/* Right Flank: Selectable Thumbnails */}
+      {/* Right Image Slides */}
       <div ref={expandedThumbnailsRef} className="invisible opacity-0 absolute top-1/2 right-10 md:right-20 -translate-y-1/2 flex flex-col gap-4 z-30 pointer-events-auto">
         {activeData.images.map((img, i) => (
           <button
@@ -349,13 +308,13 @@ export default function Projects() {
         ))}
       </div>
 
-      {/* Bottom Foundation: Centered 3-Column Metadata Grid */}
+      {/* Bottom Details Panel */}
       <div className="absolute bottom-8 md:bottom-12 left-0 w-full flex justify-center px-10 pointer-events-none z-30">
         <div ref={expandedBottomMetaRef} className="invisible opacity-0 w-full max-w-[90vw] md:max-w-[75vw] xl:max-w-[65vw] pointer-events-auto">
 
           <div className="grid grid-cols-1 md:grid-cols-[1fr_auto_1fr] gap-8 md:gap-10 items-start">
 
-            {/* Column A: Data Matrix */}
+            {/* Metadata */}
             <div className="grid grid-cols-[auto_1fr] gap-x-6 gap-y-1 font-body text-[10px] md:text-xs tracking-wide uppercase">
               <span className="text-color-accent">Status</span><span className="text-color-primary">{activeData.status}</span>
               <span className="text-color-accent">Date</span><span className="text-color-primary">{activeData.completionDate}</span>
@@ -365,7 +324,7 @@ export default function Projects() {
               <span className="text-color-accent">Stack</span><span className="text-color-primary">{activeData.stack?.join(", ")}</span>
             </div>
 
-            {/* Column B: Links (Centered Anchor) */}
+            {/* Links */}
             <div className="flex flex-col items-center justify-start gap-4 font-body text-[10px] md:text-xs font-bold tracking-widest uppercase text-color-primary pt-1">
               {activeData.links?.website && (
                 <a href={activeData.links.website} target="_blank" rel="noreferrer" className="group flex flex-col items-center gap-1 transition-opacity hover:opacity-70">
@@ -385,7 +344,7 @@ export default function Projects() {
               )}
             </div>
 
-            {/* Column C: Description (Right Aligned Container, Left Aligned Text) */}
+            {/* Description */}
             <div className="font-body text-[10px] md:text-xs text-color-accent uppercase tracking-wide leading-relaxed max-w-[280px] md:ml-auto md:text-left pt-1">
               {activeData.description}
             </div>
