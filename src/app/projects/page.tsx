@@ -159,7 +159,7 @@ export default function Projects() {
     // 2. Morph the cursor image directly to the dead center of the screen
       .to(floatingImageRef.current, {
         x: window.innerWidth / 2,
-        y: window.innerHeight / 2 - 60, // MODIFIED: Shifted higher to guarantee clearance for bottom metadata
+        y: window.innerHeight / 2 - 60,
         width: window.innerWidth >= 768 ? "45vw" : "90vw",
         height: window.innerWidth >= 768 ? "50vh" : "40vh",
         borderRadius: "4px",
@@ -323,9 +323,13 @@ export default function Projects() {
       {/* STATE 2: ARISTIDE EXPANDED LAYOUT */}
       {/* ========================================= */}
 
-      {/* Left Anchor: Massive Title */}
-      <div ref={expandedTitleRef} className="invisible opacity-0 absolute top-[15%] md:top-1/2 md:-translate-y-1/2 left-10 md:left-20 max-w-[35vw] z-30 pointer-events-none">
-        <h1 className="font-heading text-[clamp(4rem,8vw,10rem)] leading-[0.85] text-color-primary uppercase mix-blend-difference">
+      {/* MODIFIED: Left Anchor Vertical Massive Title */}
+      {/* Uses writing-mode to perfectly align bounding boxes vertically, and rotate-180 to read bottom-to-top */}
+      <div
+        ref={expandedTitleRef}
+        className="invisible opacity-0 absolute top-1/2 -translate-y-1/2 left-8 md:left-16 z-10 pointer-events-none"
+      >
+        <h1 className="font-heading text-[clamp(4rem,6vw,8rem)] leading-none text-color-primary uppercase whitespace-nowrap [writing-mode:vertical-rl] rotate-180">
           {activeData.title}
         </h1>
       </div>
@@ -345,7 +349,7 @@ export default function Projects() {
         ))}
       </div>
 
-      {/* MODIFIED: Bottom Foundation (Ultra-Minimal Aristide Grid) */}
+      {/* Bottom Foundation: Centered 3-Column Metadata Grid */}
       <div className="absolute bottom-8 md:bottom-12 left-0 w-full flex justify-center px-10 pointer-events-none z-30">
         <div ref={expandedBottomMetaRef} className="invisible opacity-0 w-full max-w-[90vw] md:max-w-[75vw] xl:max-w-[65vw] pointer-events-auto">
 
