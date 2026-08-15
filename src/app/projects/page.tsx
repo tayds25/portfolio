@@ -12,6 +12,10 @@ import gaitSlide1 from "@/assets/projects_page/gait_analysis/gait_2.png";
 import gaitSlide2 from "@/assets/projects_page/gait_analysis/gait_3.png";
 import gaitSlide3 from "@/assets/projects_page/gait_analysis/gait_1.png";
 
+import cineSlide1 from "@/assets/projects_page/cineastes_choice/cineaste_1.png";
+import cineSlide2 from "@/assets/projects_page/cineastes_choice/cineaste_2.png";
+import cineSlide3 from "@/assets/projects_page/cineastes_choice/cineaste_3.png";
+
 const projects = [
   {
     id: "gait-analysis",
@@ -30,6 +34,24 @@ const projects = [
     ],
     stack: ["Python", "MediaPipe", "OpenCV"],
     links: { github: "https://github.com/tayds25/Mediapipe-Gait-Analysis" }
+  },
+  {
+    id: "cineastes-choice",
+    title: "Cineaste's Choice",
+    category: "Systems Engineering",
+    year: "2025",
+    status: "Completed",
+    completionDate: "March 2025",
+    client: "University Course Deliverable",
+    role: "Design / Full Stack",
+    description: "A Personalized Movie Recommendation Application that uses Google's Gemini API to suggest movies tailored to individual user preferences.",
+    images: [
+      cineSlide1,
+      cineSlide2,
+      cineSlide3
+    ],
+    stack: ["Python", "React", "Tailwind CSS", "Vite", "Flask", "SQLite", "Google Gemini API"],
+    links: { github: "https://github.com/tayds25/CineastesChoice" }
   },
   {
     id: "certified-by-tay",
