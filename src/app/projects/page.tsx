@@ -8,9 +8,9 @@ import { useGSAP } from "@gsap/react";
 import ShutterOverlay from "@/components/ui/ShutterOverlay";
 
 // Project Images
-import gaitSlide1 from "@/assets/projects_page/gait_analysis/gait_1.png";
-import gaitSlide2 from "@/assets/projects_page/gait_analysis/gait_2.png";
-import gaitSlide3 from "@/assets/projects_page/gait_analysis/gait_3.png";
+import gaitSlide1 from "@/assets/projects_page/gait_analysis/gait_2.png";
+import gaitSlide2 from "@/assets/projects_page/gait_analysis/gait_3.png";
+import gaitSlide3 from "@/assets/projects_page/gait_analysis/gait_1.png";
 
 const projects = [
   {
@@ -40,13 +40,13 @@ const projects = [
     completionDate: "N/A",
     client: "Personal Project",
     role: "Creator & Developer",
-    description: "Designed and developed a curated directory showcasing premium design resources, typography, and color palettes for the creative community.",
+    description: "Designed and developed a curated directory showcasing free design resources, typography, and useful tools and websites for all creatives.",
     images: [
       "https://images.unsplash.com/photo-1561070791-2526d30994b5?q=80&w=800&auto=format&fit=crop",
       "https://images.unsplash.com/photo-1618761714954-0b8cd0026356?q=80&w=800&auto=format&fit=crop",
       "https://images.unsplash.com/photo-1498050108023-c5249f4df085?q=80&w=800&auto=format&fit=crop"
     ],
-    stack: ["Next.js", "Tailwind CSS", "Drizzle ORM", "Figma"],
+    stack: ["Next.js", "React", "Tailwind CSS", "Drizzle ORM", "Figma"],
     links: { website: "https://certifiedbytay.com", github: "https://github.com/tayds25/certified-by-tay" }
   },
 ];
@@ -211,7 +211,7 @@ export default function Projects() {
           >
             {project.images.map((img, iIndex) => (
               <Image
-                key={img}
+                key={`${project.id}-hero-${iIndex}`} // FIXED: Unique string key
                 src={img}
                 alt={`${project.title} slide ${iIndex}`}
                 fill
@@ -302,7 +302,7 @@ export default function Projects() {
       <div ref={expandedThumbnailsRef} className="invisible opacity-0 absolute top-1/2 right-10 md:right-20 -translate-y-1/2 flex flex-col gap-4 z-30 pointer-events-auto">
         {activeData.images.map((img, i) => (
           <button
-            key={`thumb-${img}`}
+            key={`thumb-${activeData.id}-${i}`} // FIXED: Unique string key combining ID and index
             onClick={() => setActiveImageIndex(i)}
             className={`relative w-20 h-14 md:w-28 md:h-16 overflow-hidden rounded border border-color-accent/30 transition-all duration-300 cursor-pointer ${
               activeImageIndex === i ? "opacity-100 ring-1 ring-color-primary" : "opacity-40 hover:opacity-100"
