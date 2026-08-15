@@ -7,6 +7,11 @@ import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import ShutterOverlay from "@/components/ui/ShutterOverlay";
 
+// Project Images
+import gaitSlide1 from "@/assets/projects_page/gait_analysis/gait_1.png";
+import gaitSlide2 from "@/assets/projects_page/gait_analysis/gait_2.png";
+import gaitSlide3 from "@/assets/projects_page/gait_analysis/gait_3.png";
+
 const projects = [
   {
     id: "gait-analysis",
@@ -17,13 +22,13 @@ const projects = [
     completionDate: "May 2026",
     client: "University Thesis",
     role: "Full Stack / ML Integration",
-    description: "Engineered a biomechanical analysis system utilizing MediaPipe for precise anatomical landmark extraction and joint angle computation.",
+    description: "Engineered a gait analysis system utilizing MediaPipe for precise anatomical landmark extraction, joint angles, and symmetry computation.",
     images: [
-      "https://images.unsplash.com/photo-1555949963-ff9fe0c870eb?q=80&w=800&auto=format&fit=crop",
-      "https://images.unsplash.com/photo-1516110833967-0b5716ca1387?q=80&w=800&auto=format&fit=crop",
-      "https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=800&auto=format&fit=crop"
+      gaitSlide1,
+      gaitSlide2,
+      gaitSlide3
     ],
-    stack: ["Python", "MediaPipe", "React", "FastAPI"],
+    stack: ["Python", "MediaPipe", "OpenCV"],
     links: { github: "https://github.com/tayds25/Mediapipe-Gait-Analysis" }
   },
   {
