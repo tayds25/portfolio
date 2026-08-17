@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import gsap from "gsap";
@@ -137,8 +137,26 @@ export default function Projects() {
   const [clickedIndex, setClickedIndex] = useState<number | null>(null);
   const [activeImageIndex, setActiveImageIndex] = useState<number>(0);
 
+  // Scroll Indicator State
+  const scrollContainerRef = useRef<HTMLDivElement | null>(null);
+  const [showScrollIndicator, setShowScrollIndicator] = useState(true);
+
   const isExpanded = useRef(false);
   const mousePos = useRef({ x: 0, y: 0 });
+
+  // Handle Dynamic Scroll Fade Calculation
+  const handleListScroll = () => {
+    if (scrollContainerRef.current) {
+      const { scrollTop, scrollHeight, clientHeight } = scrollContainerRef.current;
+      setShowScrollIndicator(scrollTop + clientHeight < scrollHeight - 20);
+    }
+  };
+
+  useEffect(() => {
+    handleListScroll();
+    window.addEventListener("resize", handleListScroll);
+    return () => window.removeEventListener("resize", handleListScroll);
+  }, []);
 
   useGSAP(() => {
     // Shutter Entry
@@ -294,9 +312,12 @@ export default function Projects() {
       <div className="relative z-10 flex h-full w-full flex-col md:flex-row pointer-events-none">
 
         {/* Left Side: Project List */}
-        <div ref={listRef} className="flex h-full w-full flex-col justify-start pt-[15vh] md:pt-[20vh] pb-10 pl-10 md:w-1/2 md:pl-20 pointer-events-auto">
+        <div ref={listRef} className="relative flex h-full w-full flex-col justify-start pt-[15vh] md:pt-[20vh] pl-10 md:w-1/2 md:pl-20 pointer-events-auto">
           <p className="mb-10 font-body text-body-reg text-color-accent shrink-0">selected works</p>
+
           <div
+            ref={scrollContainerRef}
+            onScroll={handleListScroll}
             className="flex flex-col overflow-y-auto overscroll-contain pb-32 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
             data-lenis-prevent="true"
           >
@@ -321,6 +342,21 @@ export default function Projects() {
               </div>
             ))}
           </div>
+
+          {/* Scroll Indicator Overlay */}
+          <div
+            className={`pointer-events-none absolute bottom-0 left-0 flex h-40 w-full items-end bg-gradient-to-t from-bg-screen from-40% via-bg-screen/80 to-transparent pb-8 pl-10 md:pl-20 transition-opacity duration-500 ${
+              showScrollIndicator ? "opacity-100" : "opacity-0"
+            }`}
+          >
+            <div className="flex items-center gap-3 text-color-primary drop-shadow-md">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" className="animate-bounce stroke-color-accent">
+                <path d="M12 4V20M12 20L6 14M12 20L18 14" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+              <span className="font-body text-body-xs text-color-accent">scroll down on list</span>
+            </div>
+          </div>
+
         </div>
 
         {/* Right Side: Preview Metadata */}
