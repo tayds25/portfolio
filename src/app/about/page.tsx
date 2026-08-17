@@ -75,7 +75,7 @@ export default function About() {
         <div className="absolute right-10 top-10 z-50 md:right-20 md:top-20">
             <button
             onClick={handleBackToHome}
-            className="cursor-pointer font-body text-body-reg text-text-caption transition-colors text-color-primary hover:text-color-accent"
+            className="cursor-pointer font-body text-body-reg transition-colors text-color-primary hover:text-color-accent"
             >
             close [x]
             </button>
@@ -85,7 +85,7 @@ export default function About() {
 
             {/* Left Column */}
             <div className="flex flex-col">
-            <p className="mb-10 font-body text-body-reg text-text-caption text-color-primary">
+            <p className="mb-10 font-body text-body-reg text-color-primary">
                 about the dev
             </p>
 
@@ -104,7 +104,7 @@ export default function About() {
 
             {/* Right Column */}
             <div className="flex h-full min-h-0 flex-col border-l border-ds-accent/30 border-color-accent border-text-accent pl-10">
-                <p className="mb-10 shrink-0 font-body text-body-reg text-text-caption text-color-primary">
+                <p className="mb-10 shrink-0 font-body text-body-reg text-color-primary">
                     experience
                 </p>
 
@@ -129,14 +129,14 @@ export default function About() {
                             hoveredId && hoveredId !== item.id ? "opacity-30" : "opacity-100"
                         }`}
                         >
-                            <div className="flex items-center justify-between font-body text-body-sm text-text-caption text-color-accent">
+                            <div className="flex items-center justify-between font-body text-body-sm text-color-accent">
                                 <p>[ {item.date} ]</p>
                                 <p>{item.type}</p>
                             </div>
                             <h3 className="font-heading text-h3 text-color-primary">
                                 {item.company}
                             </h3>
-                            <p className="font-body text-body-reg text-text-caption text-color-accent">
+                            <p className="font-body text-body-reg text-color-accent">
                                 {item.role}
                             </p>
                         </div>
