@@ -294,9 +294,12 @@ export default function Projects() {
       <div className="relative z-10 flex h-full w-full flex-col md:flex-row pointer-events-none">
 
         {/* Left Side: Project List */}
-        <div ref={listRef} className="flex h-full w-full flex-col justify-center pl-10 md:w-1/2 md:pl-20 pointer-events-auto">
-          <p className="mb-10 font-body text-body-reg text-color-accent">selected works</p>
-          <div className="flex flex-col">
+        <div ref={listRef} className="flex h-full w-full flex-col justify-start pt-[15vh] md:pt-[20vh] pb-10 pl-10 md:w-1/2 md:pl-20 pointer-events-auto">
+          <p className="mb-10 font-body text-body-reg text-color-accent shrink-0">selected works</p>
+          <div
+            className="flex flex-col overflow-y-auto overscroll-contain pb-32 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
+            data-lenis-prevent="true"
+          >
             {projects.map((project, index) => (
               <div
                 key={project.id}
