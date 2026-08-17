@@ -20,6 +20,10 @@ import pocSlide1 from "@/assets/projects_page/poc_cat_club/poc_1.png";
 import pocSlide2 from "@/assets/projects_page/poc_cat_club/poc_2.png";
 import pocSlide3 from "@/assets/projects_page/poc_cat_club/poc_3.png";
 
+import offbeatSlide1 from "@/assets/projects_page/offbeat/offbeat_1.png";
+import offbeatSlide2 from "@/assets/projects_page/offbeat/offbeat_2.png";
+import offbeatSlide3 from "@/assets/projects_page/offbeat/offbeat_3.png";
+
 const projects = [
   {
     id: "gait-analysis",
@@ -74,6 +78,24 @@ const projects = [
     ],
     stack: ["React", "Tailwind CSS", "Vite", "MongoDB", "Vercel"],
     links: { github: "https://github.com/tayds25/thepoccatclub" }
+  },
+  {
+    id: "offbeat",
+    title: "Offbeat",
+    category: "Web Platform",
+    year: "2025",
+    status: "Completed",
+    completionDate: "August 2025",
+    client: "University Course Deliverable",
+    role: "Design / Full Stack",
+    description: "An e-commerce platform concept for Offbeat, a fictional fashion brand, designed and created as a course deliverable.",
+    images: [
+      offbeatSlide1,
+      offbeatSlide2,
+      offbeatSlide3
+    ],
+    stack: ["Angular", "TypeScript", "Node.js"],
+    links: { github: "https://github.com/tayds25/offbeat" }
   },
   {
     id: "certified-by-tay",
