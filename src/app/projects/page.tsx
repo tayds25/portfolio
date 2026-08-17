@@ -255,7 +255,7 @@ export default function Projects() {
           >
             {project.images.map((img, iIndex) => (
               <Image
-                key={`${project.id}-hero-${iIndex}`} // FIXED: Unique string key
+                key={`${project.id}-hero-${iIndex}`}
                 src={img}
                 alt={`${project.title} slide ${iIndex}`}
                 fill
@@ -274,20 +274,25 @@ export default function Projects() {
         {/* Left Side: Project List */}
         <div ref={listRef} className="flex h-full w-full flex-col justify-center pl-10 md:w-1/2 md:pl-20 pointer-events-auto">
           <p className="mb-10 font-body text-body-reg text-color-accent">selected works</p>
-          <div className="flex flex-col gap-4">
+          <div className="flex flex-col">
             {projects.map((project, index) => (
               <div
                 key={project.id}
                 onMouseEnter={() => handleMouseEnter(index)}
                 onMouseLeave={handleMouseLeave}
                 onClick={() => handleProjectClick(index)}
-                className="group w-fit cursor-pointer"
+                className="group w-fit cursor-pointer py-6"
               >
-                <h1 className={`font-heading text-[clamp(2.5rem,5vw,6rem)] leading-none text-color-primary transition-all duration-500 ${
+                <div className={`flex items-baseline gap-6 transition-all duration-500 origin-left ${
                   hoveredIndex !== null && hoveredIndex !== index ? "opacity-20 scale-95" : "opacity-100 scale-100"
                 }`}>
-                  {project.title}
-                </h1>
+                  <span className="font-body text-body-sm text-color-accent tracking-widest">
+                    {(index + 1).toString().padStart(2, "0")}
+                  </span>
+                  <h1 className="font-heading text-[clamp(2.5rem,5vw,6rem)] leading-none text-color-primary">
+                    {project.title}
+                  </h1>
+                </div>
               </div>
             ))}
           </div>
@@ -346,7 +351,7 @@ export default function Projects() {
       <div ref={expandedThumbnailsRef} className="invisible opacity-0 absolute top-1/2 right-10 md:right-20 -translate-y-1/2 flex flex-col gap-4 z-30 pointer-events-auto">
         {activeData.images.map((img, i) => (
           <button
-            key={`thumb-${activeData.id}-${i}`} // FIXED: Unique string key combining ID and index
+            key={`thumb-${activeData.id}-${i}`}
             onClick={() => setActiveImageIndex(i)}
             className={`relative w-20 h-14 md:w-28 md:h-16 overflow-hidden rounded border border-color-accent/30 transition-all duration-300 cursor-pointer ${
               activeImageIndex === i ? "opacity-100 ring-1 ring-color-primary" : "opacity-40 hover:opacity-100"
