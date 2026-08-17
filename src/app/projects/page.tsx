@@ -16,10 +16,14 @@ import cineSlide1 from "@/assets/projects_page/cineastes_choice/cineaste_1.png";
 import cineSlide2 from "@/assets/projects_page/cineastes_choice/cineaste_2.png";
 import cineSlide3 from "@/assets/projects_page/cineastes_choice/cineaste_3.png";
 
+import pocSlide1 from "@/assets/projects_page/poc_cat_club/poc_1.png";
+import pocSlide2 from "@/assets/projects_page/poc_cat_club/poc_2.png";
+import pocSlide3 from "@/assets/projects_page/poc_cat_club/poc_3.png";
+
 const projects = [
   {
     id: "gait-analysis",
-    title: "Gait Analysis",
+    title: "Gait Analysis System",
     category: "Systems Engineering",
     year: "2026",
     status: "Completed",
@@ -52,6 +56,24 @@ const projects = [
     ],
     stack: ["Python", "React", "Tailwind CSS", "Vite", "Flask", "SQLite", "Google Gemini API"],
     links: { github: "https://github.com/tayds25/CineastesChoice" }
+  },
+  {
+    id: "poc-cat-club",
+    title: "POC Cat Club Website",
+    category: "Web Platform",
+    year: "2025",
+    status: "Completed",
+    completionDate: "March 2025",
+    client: "University Course Deliverable",
+    role: "Design / Full Stack",
+    description: "A website for the POC Cat Club, a non-profit organization that helps cats, designed and created as a course deliverable.",
+    images: [
+      pocSlide1,
+      pocSlide2,
+      pocSlide3
+    ],
+    stack: ["React", "Tailwind CSS", "Vite", "MongoDB", "Vercel"],
+    links: { github: "https://github.com/tayds25/thepoccatclub" }
   },
   {
     id: "certified-by-tay",
@@ -213,7 +235,7 @@ export default function Projects() {
       <div className="absolute right-10 top-10 z-50 md:right-20 md:top-20">
         <button
           onClick={clickedIndex !== null ? handleBackClick : handleBackToHome}
-          className="cursor-pointer font-body text-[10px] md:text-xs tracking-widest uppercase text-color-primary transition-colors hover:text-color-accent"
+          className="cursor-pointer font-body text-body-reg text-color-primary transition-colors hover:text-color-accent"
         >
           {clickedIndex !== null ? "back [x]" : "close [x]"}
         </button>
