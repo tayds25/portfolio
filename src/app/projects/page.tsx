@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import gsap from "gsap";
@@ -16,10 +16,18 @@ import cineSlide1 from "@/assets/projects_page/cineastes_choice/cineaste_1.png";
 import cineSlide2 from "@/assets/projects_page/cineastes_choice/cineaste_2.png";
 import cineSlide3 from "@/assets/projects_page/cineastes_choice/cineaste_3.png";
 
+import pocSlide1 from "@/assets/projects_page/poc_cat_club/poc_1.png";
+import pocSlide2 from "@/assets/projects_page/poc_cat_club/poc_2.png";
+import pocSlide3 from "@/assets/projects_page/poc_cat_club/poc_3.png";
+
+import offbeatSlide1 from "@/assets/projects_page/offbeat/offbeat_1.png";
+import offbeatSlide2 from "@/assets/projects_page/offbeat/offbeat_2.png";
+import offbeatSlide3 from "@/assets/projects_page/offbeat/offbeat_3.png";
+
 const projects = [
   {
     id: "gait-analysis",
-    title: "Gait Analysis",
+    title: "Gait Analysis System",
     category: "Systems Engineering",
     year: "2026",
     status: "Completed",
@@ -54,23 +62,56 @@ const projects = [
     links: { github: "https://github.com/tayds25/CineastesChoice" }
   },
   {
-    id: "certified-by-tay",
-    title: "certified by tay",
+    id: "poc-cat-club",
+    title: "POC Cat Club Website",
     category: "Web Platform",
-    year: "2026",
-    status: "Active",
-    completionDate: "N/A",
-    client: "Personal Project",
-    role: "Creator & Developer",
-    description: "Designed and developed a curated directory showcasing free design resources, typography, and useful tools and websites for all creatives.",
+    year: "2025",
+    status: "Completed",
+    completionDate: "March 2025",
+    client: "University Course Deliverable",
+    role: "Design / Full Stack",
+    description: "A website for the POC Cat Club, a non-profit organization that helps cats, designed and created as a course deliverable.",
     images: [
-      "https://images.unsplash.com/photo-1561070791-2526d30994b5?q=80&w=800&auto=format&fit=crop",
-      "https://images.unsplash.com/photo-1618761714954-0b8cd0026356?q=80&w=800&auto=format&fit=crop",
-      "https://images.unsplash.com/photo-1498050108023-c5249f4df085?q=80&w=800&auto=format&fit=crop"
+      pocSlide1,
+      pocSlide2,
+      pocSlide3
     ],
-    stack: ["Next.js", "React", "Tailwind CSS", "Drizzle ORM", "Figma"],
-    links: { website: "https://certifiedbytay.com", github: "https://github.com/tayds25/certified-by-tay" }
+    stack: ["React", "Tailwind CSS", "Vite", "MongoDB", "Vercel"],
+    links: { github: "https://github.com/tayds25/thepoccatclub" }
   },
+  {
+    id: "offbeat",
+    title: "Offbeat",
+    category: "Web Platform",
+    year: "2025",
+    status: "Completed",
+    completionDate: "August 2025",
+    client: "University Course Deliverable",
+    role: "Design / Full Stack",
+    description: "An e-commerce platform concept for Offbeat, a fictional fashion brand, designed and created as a course deliverable.",
+    images: [
+      offbeatSlide1,
+      offbeatSlide2,
+      offbeatSlide3
+    ],
+    stack: ["Angular", "TypeScript", "Node.js"],
+    links: { github: "https://github.com/tayds25/offbeat" }
+  },
+  // {
+  //   id: "certified-by-tay",
+  //   title: "certified by tay",
+  //   category: "Web Platform",
+  //   year: "2026",
+  //   status: "Active",
+  //   completionDate: "N/A",
+  //   client: "Personal Project",
+  //   role: "Creator & Developer",
+  //   description: "Designed and developed a curated directory showcasing free design resources, typography, and useful tools and websites for all creatives.",
+  //   images: [
+  //   ],
+  //   stack: ["Next.js", "React", "Tailwind CSS", "Drizzle ORM", "Figma"],
+  //   links: { website: "https://certifiedbytay.com", github: "https://github.com/tayds25/certified-by-tay" }
+  // },
 ];
 
 export default function Projects() {
@@ -93,8 +134,26 @@ export default function Projects() {
   const [clickedIndex, setClickedIndex] = useState<number | null>(null);
   const [activeImageIndex, setActiveImageIndex] = useState<number>(0);
 
+  // Scroll Indicator State
+  const scrollContainerRef = useRef<HTMLDivElement | null>(null);
+  const [showScrollIndicator, setShowScrollIndicator] = useState(true);
+
   const isExpanded = useRef(false);
   const mousePos = useRef({ x: 0, y: 0 });
+
+  // Handle Dynamic Scroll Fade Calculation
+  const handleListScroll = () => {
+    if (scrollContainerRef.current) {
+      const { scrollTop, scrollHeight, clientHeight } = scrollContainerRef.current;
+      setShowScrollIndicator(scrollTop + clientHeight < scrollHeight - 20);
+    }
+  };
+
+  useEffect(() => {
+    handleListScroll();
+    window.addEventListener("resize", handleListScroll);
+    return () => window.removeEventListener("resize", handleListScroll);
+  }, []);
 
   useGSAP(() => {
     // Shutter Entry
@@ -213,7 +272,7 @@ export default function Projects() {
       <div className="absolute right-10 top-10 z-50 md:right-20 md:top-20">
         <button
           onClick={clickedIndex !== null ? handleBackClick : handleBackToHome}
-          className="cursor-pointer font-body text-[10px] md:text-xs tracking-widest uppercase text-color-primary transition-colors hover:text-color-accent"
+          className="cursor-pointer font-body text-body-reg text-color-primary transition-colors hover:text-color-accent"
         >
           {clickedIndex !== null ? "back [x]" : "close [x]"}
         </button>
@@ -233,7 +292,7 @@ export default function Projects() {
           >
             {project.images.map((img, iIndex) => (
               <Image
-                key={`${project.id}-hero-${iIndex}`} // FIXED: Unique string key
+                key={`${project.id}-hero-${iIndex}`}
                 src={img}
                 alt={`${project.title} slide ${iIndex}`}
                 fill
@@ -250,25 +309,51 @@ export default function Projects() {
       <div className="relative z-10 flex h-full w-full flex-col md:flex-row pointer-events-none">
 
         {/* Left Side: Project List */}
-        <div ref={listRef} className="flex h-full w-full flex-col justify-center pl-10 md:w-1/2 md:pl-20 pointer-events-auto">
-          <p className="mb-10 font-body text-body-reg text-color-accent">selected works</p>
-          <div className="flex flex-col gap-4">
+        <div ref={listRef} className="relative flex h-full w-full flex-col justify-start pt-[15vh] md:pt-[20vh] pl-10 md:w-1/2 md:pl-20 pointer-events-auto">
+          <p className="mb-10 font-body text-body-reg text-color-accent shrink-0">selected works</p>
+
+          <div
+            ref={scrollContainerRef}
+            onScroll={handleListScroll}
+            className="flex flex-col overflow-y-auto overscroll-contain pb-32 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
+            data-lenis-prevent="true"
+          >
             {projects.map((project, index) => (
               <div
                 key={project.id}
                 onMouseEnter={() => handleMouseEnter(index)}
                 onMouseLeave={handleMouseLeave}
                 onClick={() => handleProjectClick(index)}
-                className="group w-fit cursor-pointer"
+                className="group w-fit cursor-pointer py-6"
               >
-                <h1 className={`font-heading text-[clamp(2.5rem,5vw,6rem)] leading-none text-color-primary transition-all duration-500 ${
+                <div className={`flex items-baseline gap-6 transition-all duration-500 origin-left ${
                   hoveredIndex !== null && hoveredIndex !== index ? "opacity-20 scale-95" : "opacity-100 scale-100"
                 }`}>
-                  {project.title}
-                </h1>
+                  <span className="font-body text-body-sm text-color-accent tracking-widest">
+                    {(index + 1).toString().padStart(2, "0")}
+                  </span>
+                  <h1 className="font-heading text-[clamp(2.5rem,5vw,6rem)] leading-none text-color-primary">
+                    {project.title}
+                  </h1>
+                </div>
               </div>
             ))}
           </div>
+
+          {/* Scroll Indicator Overlay */}
+          <div
+            className={`pointer-events-none absolute bottom-0 left-0 flex h-40 w-full items-end bg-gradient-to-t from-bg-screen from-40% via-bg-screen/80 to-transparent pb-8 pl-10 md:pl-20 transition-opacity duration-500 ${
+              showScrollIndicator ? "opacity-100" : "opacity-0"
+            }`}
+          >
+            <div className="flex items-center gap-3 text-color-primary drop-shadow-md">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" className="animate-bounce stroke-color-accent">
+                <path d="M12 4V20M12 20L6 14M12 20L18 14" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+              <span className="font-body text-body-xs text-color-accent">scroll down on list</span>
+            </div>
+          </div>
+
         </div>
 
         {/* Right Side: Preview Metadata */}
@@ -324,7 +409,7 @@ export default function Projects() {
       <div ref={expandedThumbnailsRef} className="invisible opacity-0 absolute top-1/2 right-10 md:right-20 -translate-y-1/2 flex flex-col gap-4 z-30 pointer-events-auto">
         {activeData.images.map((img, i) => (
           <button
-            key={`thumb-${activeData.id}-${i}`} // FIXED: Unique string key combining ID and index
+            key={`thumb-${activeData.id}-${i}`}
             onClick={() => setActiveImageIndex(i)}
             className={`relative w-20 h-14 md:w-28 md:h-16 overflow-hidden rounded border border-color-accent/30 transition-all duration-300 cursor-pointer ${
               activeImageIndex === i ? "opacity-100 ring-1 ring-color-primary" : "opacity-40 hover:opacity-100"
