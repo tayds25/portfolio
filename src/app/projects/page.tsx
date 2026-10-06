@@ -97,24 +97,21 @@ const projects = [
     stack: ["Angular", "TypeScript", "Node.js"],
     links: { github: "https://github.com/tayds25/offbeat" }
   },
-  {
-    id: "certified-by-tay",
-    title: "certified by tay",
-    category: "Web Platform",
-    year: "2026",
-    status: "Active",
-    completionDate: "N/A",
-    client: "Personal Project",
-    role: "Creator & Developer",
-    description: "Designed and developed a curated directory showcasing free design resources, typography, and useful tools and websites for all creatives.",
-    images: [
-      "https://images.unsplash.com/photo-1561070791-2526d30994b5?q=80&w=800&auto=format&fit=crop",
-      "https://images.unsplash.com/photo-1618761714954-0b8cd0026356?q=80&w=800&auto=format&fit=crop",
-      "https://images.unsplash.com/photo-1498050108023-c5249f4df085?q=80&w=800&auto=format&fit=crop"
-    ],
-    stack: ["Next.js", "React", "Tailwind CSS", "Drizzle ORM", "Figma"],
-    links: { website: "https://certifiedbytay.com", github: "https://github.com/tayds25/certified-by-tay" }
-  },
+  // {
+  //   id: "certified-by-tay",
+  //   title: "certified by tay",
+  //   category: "Web Platform",
+  //   year: "2026",
+  //   status: "Active",
+  //   completionDate: "N/A",
+  //   client: "Personal Project",
+  //   role: "Creator & Developer",
+  //   description: "Designed and developed a curated directory showcasing free design resources, typography, and useful tools and websites for all creatives.",
+  //   images: [
+  //   ],
+  //   stack: ["Next.js", "React", "Tailwind CSS", "Drizzle ORM", "Figma"],
+  //   links: { website: "https://certifiedbytay.com", github: "https://github.com/tayds25/certified-by-tay" }
+  // },
 ];
 
 export default function Projects() {
