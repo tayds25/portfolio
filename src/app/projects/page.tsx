@@ -3,6 +3,7 @@
 import { useRef, useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
+import { StaticImageData } from "next/image";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import ShutterOverlay from "@/components/ui/ShutterOverlay";
@@ -24,7 +25,25 @@ import offbeatSlide1 from "@/assets/projects_page/offbeat/offbeat_1.png";
 import offbeatSlide2 from "@/assets/projects_page/offbeat/offbeat_2.png";
 import offbeatSlide3 from "@/assets/projects_page/offbeat/offbeat_3.png";
 
-const projects = [
+type Project = {
+  id: string;
+  title: string;
+  category: string;
+  year: string;
+  status: string;
+  completionDate: string;
+  client: string;
+  role: string;
+  description: string;
+  images: (string | StaticImageData)[];
+  stack: string[];
+  links?: {
+    github?: string;
+    website?: string;
+  };
+};
+
+const projects: Project[] = [
   {
     id: "gait-analysis",
     title: "Gait Analysis System",
